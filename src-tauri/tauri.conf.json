@@ -44,7 +44,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRDNDg2RUU2OTQxQzQwRTUKUldUbFFCeVU1bTVJVERmM3lUakhVQ2ZjaG1wa1VLR1lXM29aTVFkNnJjQi9yZmpyTFJ0TnY0V24K",
       "endpoints": [
-        "https://github.com/user/repo/releases/latest/download/latest.json"
+        "https://github.com/LibertAntoine/Jumper/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"
