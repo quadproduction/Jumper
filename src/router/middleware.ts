@@ -7,9 +7,11 @@ export const userAuthorisationGuard = async (
   from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  if (to.name === 'login') return next()
-  if (!jumper.client.jumperClient.defaults.baseURL) await jumper.client.setBackendUrl()
-  if (!jumper.client.jumperClient.defaults.baseURL) return next({ name: 'login' })
+  if (!jumper.client.jumperClient.defaults.baseURL)
+    await jumper.client.setBackendUrl()
+  if (['login', 'debug'].includes(to.name as string)) return next()
+  if (!jumper.client.jumperClient.defaults.baseURL)
+    return next({ name: 'login' })
   const pagePermisions = await usePagePermissions()
   for (const record of to.matched) {
     if (record.name === undefined) throw new Error('Route name is not defined')

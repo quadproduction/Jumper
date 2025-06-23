@@ -161,12 +161,12 @@ const redirectToOidcProvider = async () => {
     await loggedUser.refetch()
     router.push({ name: 'home' })
   })
-  // window.location.href = oidcRedirectUrl.value
 }
 
 const isBackendReachable = ref(
   jumper.client.jumperClient.defaults.baseURL !== undefined
 )
+
 const backendUrl = ref(jumper.client.jumperClient.defaults.baseURL || '')
 const isCheckingBackendUrl = ref(false)
 const email = ref('')
