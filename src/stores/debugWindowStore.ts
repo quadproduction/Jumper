@@ -5,15 +5,18 @@ import { ref } from 'vue'
 export const useDebugWindowStore = defineStore('debugWindow', () => {
   const isOpen = ref(false)
   const debugWindow = ref<Window | null>(null)
-  getAllWindows().then((windows) => {
-    debugWindow.value =
-      windows.find((window) => window.label === 'debug') ?? null
-  })
 
-  const open = () => {
+  const open = async () => {
+    await refreshWindows()
     if (!debugWindow.value) return
     debugWindow.value.show()
     isOpen.value = true
+  }
+
+  const refreshWindows = async () => {
+    const windows = await getAllWindows()
+    debugWindow.value =
+      windows.find((window) => window.label === 'debug') ?? null
   }
 
   const focus = async () => {
@@ -30,6 +33,8 @@ export const useDebugWindowStore = defineStore('debugWindow', () => {
     debugWindow.value.hide()
     isOpen.value = false
   }
+
+  refreshWindows()
 
   return {
     isOpen,
