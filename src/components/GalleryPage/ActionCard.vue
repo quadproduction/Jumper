@@ -6,8 +6,7 @@
       'hover:shadow-md': !hasOptions || optionsExec?.options.value,
       'cursor-not-allowed opacity-65':
         hasOptions &&
-        !optionsExec?.isRunning.value &&
-        !optionsExec?.options.value
+        !optionsExec?.options.value?.length
     }"
     @click="execAction(null)"
   >
@@ -44,7 +43,7 @@
             hover:text-slate-700 dark:bg-slate-700 dark:text-slate-400"
           :class="{
             'pointer-events-none cursor-not-allowed':
-              !optionsExec?.options.value
+              !optionsExec?.options.value?.length
           }"
           :items="optionsExec?.options.value ?? []"
           list-item-class="cursor-pointer p-1 data-[highlighted]:bg-slate-200 dark:data-[highlighted]:bg-slate-800"
@@ -65,6 +64,9 @@
               v-else-if="optionsExec?.isRunning.value"
             >
               <Loader2 class="animate-spin text-slate-500" />
+            </p>
+            <p class="ml-[16px] flex w-[100px] justify-center truncate" v-else-if="optionsExec?.options.value?.length == 0">
+              <Minus />
             </p>
             <p class="ml-[16px] flex w-[100px] justify-center truncate" v-else>
               <X class="text-red-500" />
@@ -87,7 +89,7 @@
 
 <script setup lang="ts">
 import type { PlayableAction } from '@@types'
-import { Carrot, Loader2, X } from 'lucide-vue-next'
+import { Carrot, Loader2, X, Minus } from 'lucide-vue-next'
 import { Combobox } from '@@materials/input'
 import { useActionExec } from './useActionExec'
 import { useToast } from '@@materials/ui/toast'
