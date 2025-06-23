@@ -86,7 +86,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { PlayableAction } from '@@types'
 import { Carrot, Loader2, X } from 'lucide-vue-next'
 import { Combobox } from '@@materials/input'
@@ -102,7 +101,6 @@ const { toast } = useToast()
 
 const { hasOptions, getOptions, exec } = useActionExec(() => props.action)
 const optionsExec = getOptions()
-const error = ref<boolean>(false)
 
 onMounted(async () => {
   if (optionsExec) {
