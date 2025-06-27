@@ -4,7 +4,7 @@
       bg-slate-100 p-2 pb-1 transition-all dark:bg-slate-800"
     :class="{
       'hover:shadow-md': !hasOptions || optionsExec?.options.value,
-      'cursor-not-allowed opacity-65':
+      'cursor-not-allowed opacity-65 pointer-events-none':
         hasOptions &&
         !optionsExec?.options.value?.length
     }"
