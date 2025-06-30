@@ -39,14 +39,14 @@
           >
             <div class="flex w-full items-center">
               <p
-                class="truncate text-sm font-[600] leading-[17px] text-slate-800"
+                class="truncate text-sm font-[600] leading-[17px] text-slate-800 dark:text-slate-200"
               >
                 {{ execution.namespace }}
               </p>
               <p
                 v-if="execution.mode == 'get-options'"
                 class="ml-0.5 rounded-md bg-blue-300 px-1 text-[12px] leading-[17px] text-slate-800
-                  shadow-sm"
+                  shadow-sm "
               >
                 O
               </p>
@@ -96,7 +96,7 @@
           >
             <div class="flex w-full items-center gap-0.5">
               <p
-                class="truncate text-sm font-[600] leading-[17px] text-slate-800"
+                class="truncate text-sm font-[600] leading-[17px] text-slate-800 dark:text-slate-200"
               >
                 {{ execution.namespace }}
               </p>
@@ -137,7 +137,7 @@
           :key="log.timestamp"
           class="whitespace-pre-wrap px-2 font-mono"
           :class="{
-            'text-slate-800': log.level !== 'error' && log.level !== 'warn',
+            'text-slate-800 dark:text-slate-300': log.level !== 'error' && log.level !== 'warn',
             'bg-slate-300/50 bg-opacity-60 dark:bg-slate-700 dark:bg-opacity-30':
               i % 2 === 0 && log.level !== 'error' && log.level !== 'warn',
             'bg-red-100 font-semibold text-red-500 dark:bg-slate-800':
@@ -153,7 +153,7 @@
         </div>
       </div>
       <div
-        class="flex h-[22px] w-full items-center bg-slate-300 px-2 dark:bg-slate-800"
+        class="flex h-[22px] w-full items-center bg-slate-300 px-2 dark:bg-slate-900 flex-shrink-0"
       >
         <div class="flex items-center gap-1">
           <MiniSwitch
@@ -164,7 +164,7 @@
         </div>
         <Button
           class="ml-auto flex h-[18px] w-[18px] items-center justify-center p-2.5 text-slate-500
-            hover:text-slate-800"
+            hover:text-slate-800 hover:dark:text-slate-200"
           variant="ghost"
           title="Clear logs"
           :disabled="showedLogs.length === 0"
