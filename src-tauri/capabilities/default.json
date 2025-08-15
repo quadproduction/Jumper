@@ -52,6 +52,7 @@
     "core:window:allow-destroy",
     "core:window:allow-set-focus",
     "core:window:allow-unminimize",
+    "updater:default",
     "shell:default",
     "shell:allow-execute",
     "shell:allow-spawn",
