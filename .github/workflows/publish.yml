@@ -30,13 +30,13 @@ jobs:
         run: npm install
 
       - name: Inject GitHub Release Version into Cargo.toml
+        shell: bash
         run: |
           VERSION=${GITHUB_EVENT_RELEASE_TAG_NAME}
-          # Met à jour la ligne version dans Cargo.toml
-          sed -i.bak "s/^version = .*/version = \"${VERSION#v}\"/" Cargo.toml
+          sed -i "s/^version = .*/version = \"${VERSION#v}\"/" Cargo.toml
         env:
           GITHUB_EVENT_RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
-
+          
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
