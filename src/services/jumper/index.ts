@@ -4,5 +4,6 @@ import * as users from './users'
 import * as groups from './groups'
 import * as roles from './roles'
 import * as actions from './actions'
+import * as update from './update'
 
-export default { client, auth, users, groups, roles, actions }
+export default { client, auth, users, groups, roles, actions, update }

@@ -3,7 +3,7 @@
   "identifier": "default",
   "description": "Capability for the main window",
   "windows": [
-    "main", "debug"
+    "main", "debug", "updater"
   ],
   "permissions": [
     "core:default",
@@ -60,6 +60,7 @@
     "fs:allow-template-write-recursive",
     "log:default",
     "fs:default",
-    "app-exit:default"
+    "app-exit:default",
+    "core:webview:allow-create-webview-window"
   ]
 }

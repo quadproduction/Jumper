@@ -9,3 +9,15 @@ export interface Order {
   field: string
   direction: 'asc' | 'desc'
 }
+
+export type VersionInfo = {
+    version: string;
+    notes: string;
+    pub_date: string;
+    platforms: {
+        [key: string]: {
+            signature: string;
+            url: string;
+        };
+    };
+}

@@ -9,7 +9,7 @@ export const userAuthorisationGuard = async (
 ) => {
   if (!jumper.client.jumperClient.defaults.baseURL)
     await jumper.client.setBackendUrl()
-  if (['login', 'debug'].includes(to.name as string)) return next()
+  if (['login', 'debug', 'updater'].includes(to.name as string)) return next()
   if (!jumper.client.jumperClient.defaults.baseURL)
     return next({ name: 'login' })
   const pagePermisions = await usePagePermissions()

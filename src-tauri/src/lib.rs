@@ -1,7 +1,48 @@
 use std::io::Write;
 use std::process::Command;
-use tempfile::NamedTempFile;
+use tauri::{Manager, Runtime, Webview};
 use tauri_plugin_deep_link::DeepLinkExt;
+use tauri_plugin_updater::UpdaterExt;
+use tempfile::NamedTempFile;
+use url::Url;
+
+#[derive(serde::Serialize)]
+struct UpdateResult {
+    rid: u32,
+    version: String,
+    date: String,
+    body: String,
+    raw_json: String,
+}
+
+#[tauri::command]
+async fn check_updates<R: Runtime>(webview: Webview<R>, base_url: String) -> Result<Option<UpdateResult>, String> {
+    let update_url = format!("{}/v1/frontend-update", base_url);
+    let update_url = Url::parse(&update_url).map_err(|e| e.to_string())?;
+
+    let update = webview
+        .updater_builder()
+        .endpoints(vec![update_url])
+        .map_err(|e| e.to_string())?
+        .build()
+        .map_err(|e| e.to_string())?
+        .check()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let result = update.map(|u| {
+        let rid = webview.resources_table().add(u.clone());
+        UpdateResult {
+            rid,
+            version: u.version.to_string(),
+            date: u.date.map_or(String::new(), |d| d.to_string()),
+            body: u.body.unwrap_or_default(),
+            raw_json: u.raw_json.to_string(),
+        }
+    });
+
+    Ok(result)
+}
 
 #[tauri::command]
 fn get_env_var(key: String) -> Option<String> {
@@ -52,6 +93,12 @@ async fn run_cmd_script(script: String) -> Result<String, String> {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    if cfg!(dev) {
+        std::env::set_var("TAURI_DEBUG", "true");
+    } else {
+        std::env::set_var("TAURI_DEBUG", "false");
+    }
+
     tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|_app, _argv, _cwd| {
             // Handle when a second instance is launched (optional)
@@ -70,7 +117,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             kill_process,
             run_cmd_script,
-            get_env_var
+            get_env_var,
+            check_updates
         ])
         .setup(|app| {
             #[cfg(desktop)]

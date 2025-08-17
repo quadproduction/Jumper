@@ -13,10 +13,12 @@
       {
         "decorations": false,
         "title": "Jumper",
+        "label": "main",
         "width": 1200,
         "height": 680,
         "minHeight": 380,
-        "minWidth": 330
+        "minWidth": 330,
+        "visible": false
       },
       {
         "decorations": false,
@@ -28,6 +30,19 @@
         "minHeight": 380,
         "minWidth": 500,
         "visible": false
+      },
+      {
+        "decorations": false,
+        "title": "updater",
+        "url": "/updater",
+        "label": "updater",
+        "width": 380,
+        "height": 380,
+        "minHeight": 380,
+        "minWidth": 380,
+        "maxHeight": 380,
+        "maxWidth": 380,
+        "center": true
       }
     ],
     "security": {

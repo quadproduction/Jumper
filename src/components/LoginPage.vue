@@ -100,9 +100,7 @@
         </div>
       </template>
     </div>
-
     <div
-      v-if="isBackendReachable"
       class="absolute bottom-1 left-2 flex items-center gap-1 text-center text-xs italic
         text-slate-400/80 dark:text-slate-500/80"
     >
@@ -132,6 +130,7 @@ import jumper from '@/services/jumper'
 import { openUrl } from '@tauri-apps/plugin-opener'
 import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
 import { getVersion } from '@tauri-apps/api/app'
+import { useUpdater } from '@/composables/useUpdater'
 
 import { useAuthConfigStore, useAuthUserStore } from '@/stores'
 import { useDark } from '@vueuse/core'
@@ -144,6 +143,7 @@ import { Label } from '@@materials/ui/label'
 
 const isDark = useDark()
 const appVersion = ref<string | null>(null)
+const updater = useUpdater()
 
 getVersion().then((version) => {
   appVersion.value = version
@@ -222,11 +222,13 @@ const setBackendUrl = async () => {
   loggedUser.refetch()
   authConfigStore.refetch()
   isBackendReachable.value = true
+  updater.askForUpdate()
 }
 
 const unsetBackendUrl = () => {
   jumper.client.jumperClient.defaults.baseURL = undefined
   isBackendReachable.value = false
+
 }
 </script>
 

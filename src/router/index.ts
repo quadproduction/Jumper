@@ -4,6 +4,7 @@ import GalleryPage from '@/components/GalleryPage/GalleryPage.vue'
 import BackOfficePage from '@/components/BackOfficePage/BackOfficePage.vue'
 import LoginPage from '@/components/LoginPage.vue'
 import DebugPage from '@/components/DebugPage/DebugPage.vue'
+import UpdaterPage from '@/components/UpdaterPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +13,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage
+    },
+    {
+      path: '/updater',
+      name: 'updater',
+      component: UpdaterPage
     },
     {
       path: '/',
@@ -50,7 +56,8 @@ const router = createRouter({
         {
           path: 'actions',
           name: 'actions',
-          component: () => import('@/components/BackOfficePage/ActionsPage/ActionsPage.vue')
+          component: () =>
+            import('@/components/BackOfficePage/ActionsPage/ActionsPage.vue')
         },
         {
           path: 'users',
@@ -88,8 +95,8 @@ const router = createRouter({
     {
       path: '/debug',
       name: 'debug',
-      component: DebugPage,
-    },
+      component: DebugPage
+    }
   ]
 })
 
