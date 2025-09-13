@@ -16,6 +16,11 @@
 <script setup lang="ts">
 import InputField from '@@materials/input/InputField.vue'
 
+const options = defineModel<string[] | null>('options', {
+  default: null
+})
+options.value = null
+
 defineProps<{
   differentDataFields: string[]
 }>()
