@@ -17,7 +17,7 @@
       handle=".handle"
       v-bind="dragOptions"
     >
-      <template #item="{ element, index }">
+      <template #item="{ element }">
         <TagsInputItem
           :class="
             cn(tagVariants({ variant, size })) + (draggable ? ' handle' : '')

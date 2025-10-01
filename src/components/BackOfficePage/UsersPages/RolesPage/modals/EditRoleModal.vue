@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Role, DetailedRole, User, Group, Action } from '@@types'
+import type { Role, DetailedRole, User, Group } from '@@types'
 import { useRoleForm } from './useRoleForm'
 import jumper from '@/services/jumper'
 import { useAuthConfigStore } from '@/stores'

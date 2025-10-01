@@ -7,7 +7,8 @@
     "build_py": "pyinstaller -F py/__main__.py --distpath src-tauri/bin/python --clean -n python-x86_64-pc-windows-msvc",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
     "@bithero/monaco-editor-vite-plugin": "^1.0.2",
