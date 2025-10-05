@@ -44,6 +44,7 @@ export const useActionDetailedForm = (
         description: z.string().max(500).optional(),
         isPublic: z.boolean().default(false),
         isActive: z.boolean().default(false),
+        thumbnailUrl: z.string().url().optional(),
         permissions: z
           .array(z.custom<User | DetailedGroup | DetailedRole>())
           .default([]),

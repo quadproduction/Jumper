@@ -56,14 +56,6 @@ export const useActions = () => {
       actionId,
       thumbnail
     )
-    actionDetailedQuery.setData((old) => {
-      if (!old) return null
-      return {
-        ...old,
-        thumbnailUrl
-      }
-    })
-    actionsQuery.refetch()
     return thumbnailUrl
   }
 

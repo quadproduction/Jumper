@@ -36,6 +36,7 @@ export const useVersions = (
       isPublic: version.isPublic,
       data: version.data,
       isActive: version.isActive,
+      thumbnailUrl: version.thumbnailUrl,
       permissions: [
         ...version.users,
         ...version.groups,

@@ -96,8 +96,8 @@
                 <ImagePlus class="size-6" />
               </div>
               <img
-                v-if="actionDetailed?.thumbnailUrl"
-                :src="actionDetailed?.thumbnailUrl"
+                v-if="thumbnailUrl || actionDetailed?.thumbnailUrl"
+                :src="thumbnailUrl || actionDetailed?.thumbnailUrl"
                 class="h-full w-full rounded-md object-contain"
               />
               <div
@@ -115,16 +115,15 @@
 </template>
 
 <script setup lang="ts">
-import { Switch } from '@@materials/ui/switch'
+import { useField } from 'vee-validate'
 import { useFileDialog } from '@vueuse/core'
+import { Switch } from '@@materials/ui/switch'
 import type { ActionsComposable } from '../../useActions'
 import { useToast } from '@@materials/ui/toast'
 import ActionPermissionTagsField from '../ActionMainForm/ActionPermissionTagsField.vue'
 import { InputField, TextareaField, CheckboxField } from '@@materials/input'
 import { Badge } from '@@materials/ui/badge'
-
 import { Check, Link, Carrot, ImagePlus } from 'lucide-vue-next'
-import { useField } from 'vee-validate'
 
 const props = defineProps<{
   actionsComposable: ActionsComposable
@@ -134,6 +133,7 @@ const props = defineProps<{
 const { actionDetailed } = props.actionsComposable
 const { value: isPublic } = useField<boolean>('isPublic')
 const { value: isActive } = useField<boolean>('isActive')
+const { value: thumbnailUrl } = useField<string | null>('thumbnailUrl')
 
 const { open, onChange } = useFileDialog({
   multiple: false,
@@ -146,15 +146,10 @@ onChange(async (files) => {
   if (files && files.length > 0 && actionDetailed.value) {
     const file = files[0]
     try {
-      await props.actionsComposable.updateThumbnail(
+      thumbnailUrl.value = await props.actionsComposable.updateThumbnail(
         actionDetailed.value.id,
         file
       )
-      toast({
-        title: 'Thumbnail updated.',
-        description: `Action thumbnail updated to ${file.name}.`,
-        variant: 'default'
-      })
     } catch (error) {
       if (error instanceof Error) {
         toast({
