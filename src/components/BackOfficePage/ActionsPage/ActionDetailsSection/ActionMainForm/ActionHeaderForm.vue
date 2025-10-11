@@ -20,7 +20,13 @@
             <img v-else src="/actions/windows-cmd.png" />
           </div>
           <p class="font-semibold">{{ actionDetailed.name }}</p>
-          <div class="ml-auto size-2 animate-pulse rounded-full bg-green-400" />
+          <div
+            class="ml-auto size-2 animate-pulse rounded-full"
+            :class="{
+              'bg-green-400': actionDetailed.isActive,
+              'bg-slate-300': !actionDetailed.isActive
+            }"
+          />
           <Button
             class="ml-1 flex size-9 items-center justify-center bg-slate-50 p-2 text-sm
               text-slate-500 hover:bg-slate-100 hover:text-slate-950 dark:bg-slate-950
