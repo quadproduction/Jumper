@@ -18,24 +18,24 @@
         class="text-md w-full overflow-hidden break-all text-center font-semibold
           text-slate-700 dark:text-slate-200"
         :class="{
-          'line-clamp-2': !cardOptions,
-          'line-clamp-1': cardOptions
+          'line-clamp-2': !hasCombobox,
+          'line-clamp-1': hasCombobox
         }"
       >
         {{ name }}
       </h2>
       <Combobox
-        v-if="cardOptions"
+        v-if="hasCombobox"
         class="text-md ml-0!important h-[18px] w-[115px] gap-0 truncate border-none
           bg-slate-100 px-0.5 text-xs italic text-slate-400 hover:bg-slate-50
           hover:text-slate-700 dark:bg-slate-700 dark:text-slate-400"
-        :items="cardOptions"
+        :items="cardOptions ?? []"
         disable-check
         list-item-class="cursor-pointer p-1 data-[highlighted]:bg-slate-200 dark:data-[highlighted]:bg-slate-800"
         pop-ever-class="bg-slate-100 dark:bg-slate-700"
       >
         <template #selection
-          ><p class="ml-[16px] flex w-[100px] justify-center truncate">
+          ><p class="ml-[16px] flex w-[100px] justify-center truncate" v-if="cardOptions && cardOptions.length > 0">
             {{ cardOptions[0] }}
           </p>
         </template>
@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import type { ActionsComposable } from '../../useActions'
 import { useField } from 'vee-validate'
 import { Carrot } from 'lucide-vue-next'
@@ -67,6 +67,14 @@ const selectedOption = ref<string | null>(null)
 
 const { actionDetailed } = props.actionsComposable
 const { value: name } = useField<string>('name')
+
+const hasCombobox = computed(() => {
+  return (
+    actionDetailed.value?.data &&
+    'useCombobox' in actionDetailed.value?.data &&
+    actionDetailed.value?.data.useCombobox
+  )
+})
 
 watch(
   () => props.cardOptions,

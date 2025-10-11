@@ -9,12 +9,10 @@
         />
         <div class="relative flex h-full overflow-hidden">
           <div
-            class="flex flex-grow flex-col transition-all ease-in-out h-full relative" 
+            class="relative flex h-full flex-grow flex-col transition-all ease-in-out"
             :class="[isVersionBarOpen ? 'md:mr-[244px]' : 'md:mr-0']"
           >
-            <div
-              class="mt-4 flex w-full flex-col gap-2 overflow-hidden h-full"
-            >
+            <div class="mt-4 flex h-full w-full flex-col gap-2 overflow-hidden">
               <component
                 :is="ACTION_DATA_COMPONENTS[actionDetailed.data.type]"
                 :actionComposable="actionsComposable"
@@ -22,21 +20,26 @@
                 v-model:options="cardOptions"
               />
             </div>
-            <div class="flex w-full items-end justify-end gap-2 border-t flex-shrink-0">
+            <div
+              class="flex w-full flex-shrink-0 items-end justify-end gap-2 border-t"
+            >
               <div class="mr-auto">
                 <DeleteActionButton
                   class="mr-auto"
                   :actionsComposable="actionsComposable"
                 />
               </div>
-              <Button size="sm" class="mt-2" :disabled="!meta.dirty || !meta.valid">
+              <Button
+                size="sm"
+                class="mt-2"
+                :disabled="!meta.dirty || !meta.valid"
+              >
                 <Save />
                 Save
               </Button>
             </div>
           </div>
-          <transition name="slide-right"
-          >
+          <transition name="slide-right">
             <ActionDetailsVersionsBar
               v-if="isVersionBarOpen"
               class="absolute right-0 transform"
@@ -50,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { ActionsComposable } from '../useActions'
 import { useToast } from '@@materials/ui/toast'
 import Button from '@@materials/ui/button/Button.vue'
@@ -78,17 +81,24 @@ const versionsComposable = useVersions(isVersionBarOpen, actionDetailed, form)
 const { differentDataFields, versionsQuery } = versionsComposable
 const cardOptions = ref<string[] | null>([])
 
+watch(
+  () => actionDetailed.value,
+  () => (cardOptions.value = null)
+)
+
 const onSubmit = handleSubmit(async (values) => {
   try {
     if (!actionDetailed.value) return
     await props.actionsComposable.update(actionDetailed.value.id, {
       ...values,
-      data: values.data && (values.data.type === "Python" || values.data.type === "Windows CMD")
-        ? {
-            ...values.data,
-            comboboxCode: values.data.comboboxCode ?? ""
-          }
-        : values.data,
+      data:
+        values.data &&
+        (values.data.type === 'Python' || values.data.type === 'Windows CMD')
+          ? {
+              ...values.data,
+              comboboxCode: values.data.comboboxCode ?? ''
+            }
+          : values.data,
       user_ids: values.permissions
         .filter((p) => 'username' in p)
         .map((p) => p.id),
