@@ -21,3 +21,10 @@ export type VersionInfo = {
         };
     };
 }
+
+export interface CarrotInfo {
+  name: string
+  version: string
+  commit: string
+  buildDate: string
+}
