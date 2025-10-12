@@ -88,12 +88,12 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import type { PlayableAction } from '@@types'
 import { Carrot, Loader2, X, Minus } from 'lucide-vue-next'
 import { Combobox } from '@@materials/input'
 import { useActionExec } from './useActionExec'
 import { useToast } from '@@materials/ui/toast'
-import { onMounted } from 'vue'
 
 const props = defineProps<{
   action: PlayableAction
@@ -112,6 +112,10 @@ onMounted(async () => {
     await optionsExec.exec()
     clearTimeout(timeout)
   }
+})
+
+onUnmounted(() => {
+  optionsExec?.kill()
 })
 
 const execAction = async (option: string | null) => {
