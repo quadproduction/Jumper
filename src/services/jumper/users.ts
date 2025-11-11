@@ -1,4 +1,4 @@
-import type { User, DetailedUser, Group, Page } from '@@types'
+import type { User, DetailedUser, Group, Page, UserPreferences } from '@@types'
 import { jumperClient, JumperBackendError } from '@/services/jumper/client'
 
 export const getAuthUser = async () => {
@@ -90,5 +90,46 @@ export const isLastAdmin = async (userId: User['id']): Promise<boolean> => {
   if (response.status !== 200) {
     throw new Error('Failed to check if user is last admin')
   }
+  return response.data
+}
+
+export const updateUserPreferences = async (
+  preferenceId: UserPreferences['id'],
+  preferences: Partial<UserPreferences>
+) => {
+  const response = await jumperClient.patch<UserPreferences>(
+    `/v1/user-preferences/${preferenceId}`,
+    preferences
+  )
+  if (response.status !== 200) throw new JumperBackendError(response)
+  return response.data
+}
+
+export const updateUserPreferenceBackgroundImage = async (
+  preferenceId: UserPreferences['id'],
+  file: File
+) => {
+  const formData = new FormData()
+  formData.append('custom_background_image', file)
+  const response = await jumperClient.put<{
+    customBackgroundImageUrl: string | null
+  }>(`/v1/user-preferences/${preferenceId}/background-image`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  if (response.status !== 200)
+    throw new Error('Failed to update user preference background image')
+  return response.data
+}
+
+export const deleteUserPreferenceBackgroundImage = async (
+  preferenceId: UserPreferences['id']
+) => {
+  const response = await jumperClient.delete<{
+    customBackgroundImageUrl: string | null
+  }>(`/v1/user-preferences/${preferenceId}/background-image`)
+  if (response.status !== 204)
+    throw new Error('Failed to delete user preference background image')
   return response.data
 }

@@ -16,13 +16,13 @@
       <div class="mr-auto">
         <DeleteAccountButton class="mr-auto" />
       </div>
-      <Button variant="outline" type="submit" size="sm" @click="onSubmit">
+      <!-- <Button variant="outline" type="submit" size="sm">
         <Lock class="h-6 w-6" />
         <p>
           <Loader2 v-if="isSubmitting" class="ml-1 h-4 w-4 animate-spin" />
           <span v-else>Edit Password</span>
         </p>
-      </Button>
+      </Button> -->
       <Button
         variant="outline"
         type="submit"
@@ -58,7 +58,7 @@ import { storeToRefs } from 'pinia'
 import { useAuthUserStore } from '@/stores'
 import { useConfirmToast } from '@/composables/useConfirmToast'
 import { getUserDisplayName } from '@/services/helpers/userName'
-import { BackOfficeHeader, BackOfficePageLayout } from '../@common'
+import { BackOfficeHeader, BackOfficePageLayout } from '../../@common'
 import DeleteAccountButton from './modals/DeleteAccountButton.vue'
 
 import { Save, Loader2, LogOut, Lock } from 'lucide-vue-next'

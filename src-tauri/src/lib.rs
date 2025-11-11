@@ -16,7 +16,10 @@ struct UpdateResult {
 }
 
 #[tauri::command]
-async fn check_updates<R: Runtime>(webview: Webview<R>, base_url: String) -> Result<Option<UpdateResult>, String> {
+async fn check_updates<R: Runtime>(
+    webview: Webview<R>,
+    base_url: String,
+) -> Result<Option<UpdateResult>, String> {
     let update_url = format!("{}/v1/frontend-update", base_url);
     let update_url = Url::parse(&update_url).map_err(|e| e.to_string())?;
 
@@ -100,6 +103,7 @@ pub fn run() {
     }
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_single_instance::init(|_app, _argv, _cwd| {
             // Handle when a second instance is launched (optional)
         }))

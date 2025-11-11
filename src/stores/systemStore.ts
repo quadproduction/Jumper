@@ -17,6 +17,21 @@ export const useSystemStore = defineStore('system', () => {
     query.setData(() => newData)
   }
 
+  const updateDefaultBackgroundImage = async (file: File) => {
+    const newData = await jumper.system.updateDefaultBackgroundImage(file)
+    query.setData((oldData) => ({
+      ...oldData,
+      defaultBackgroundImageUrl: newData.defaultBackgroundImageUrl
+    }))
+  }
+  const deleteDefaultBackgroundImage = async () => {
+    await jumper.system.deleteDefaultBackgroundImage()
+    query.setData((oldData) => ({
+      ...oldData,
+      defaultBackgroundImageUrl: null
+    }))
+  }
+
   const isWorkspacesAllowed = computed(
     () => systemInfo.value?.allowActionWorkspaces ?? false
   )
@@ -27,6 +42,8 @@ export const useSystemStore = defineStore('system', () => {
     errorMessage,
     isWorkspacesAllowed,
     refetch,
-    updateSystemInfo
+    updateSystemInfo,
+    updateDefaultBackgroundImage,
+    deleteDefaultBackgroundImage
   }
 })

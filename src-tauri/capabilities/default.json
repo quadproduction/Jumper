@@ -61,6 +61,7 @@
     "log:default",
     "fs:default",
     "app-exit:default",
+    "dialog:allow-open",
     "core:webview:allow-create-webview-window"
   ]
 }

@@ -16,3 +16,27 @@ export const updateSystemInfo = async (data: Partial<SystemInfo>) => {
   }
   return response.data
 }
+
+export const updateDefaultBackgroundImage = async (file: File) => {
+  const formData = new FormData()
+  formData.append('default_background_image', file)
+  const response = await jumperClient.put<{
+    defaultBackgroundImageUrl: string | null
+  }>(`/v1/system-info/default-background`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  if (response.status !== 200)
+    throw new Error('Failed to update default background image')
+  return response.data
+}
+
+export const deleteDefaultBackgroundImage = async () => {
+  const response = await jumperClient.delete<{
+    defaultBackgroundImageUrl: string | null
+  }>(`/v1/system-info/default-background`)
+  if (response.status !== 204)
+    throw new Error('Failed to delete default background image')
+  return response.data
+}

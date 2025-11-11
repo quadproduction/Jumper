@@ -8,7 +8,9 @@ export const useSystemForm = (
 ): ReturnType<typeof useForm> => {
   const systemSchema = toTypedSchema(
     z.object({
-      allowActionWorkspaces: z.boolean()
+      allowActionWorkspaces: z.boolean(),
+      allowBackgroundImage: z.boolean(),
+      allowUserCustomBackgroundImage: z.boolean(),
     })
   )
   return useForm({

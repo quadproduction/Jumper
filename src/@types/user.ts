@@ -21,6 +21,7 @@ export type User = ShortUser & {
   password?: string
   systemRole: SystemRole
   isSuperuser: boolean
+  preferences: UserPreferences
 }
 
 export type DetailedUser = Omit<User, 'groups'> & {
@@ -54,4 +55,10 @@ export type DetailedRole = Omit<Role, 'users' | 'groups'> & {
   users: User[]
   groups: Group[]
   actions: Action[]
+}
+
+export type UserPreferences = {
+  readonly id: number
+  disableDefaultBackgroundImage: boolean
+  customBackgroundImageUrl: string | null
 }

@@ -40,7 +40,7 @@ const router = createRouter({
               name: 'profile',
               component: () =>
                 import(
-                  '@/components/BackOfficePage/AccountPage/ProfilePage.vue'
+                  '@/components/BackOfficePage/AccountPage/ProfilePage/ProfilePage.vue'
                 )
             },
             {
@@ -48,7 +48,7 @@ const router = createRouter({
               name: 'appearance',
               component: () =>
                 import(
-                  '@/components/BackOfficePage/AccountPage/AppearancePage.vue'
+                  '@/components/BackOfficePage/AccountPage/AppearancePage/AppearancePage.vue'
                 )
             }
           ]
