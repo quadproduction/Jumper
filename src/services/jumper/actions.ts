@@ -8,8 +8,13 @@ import type {
 } from '@@types'
 import { jumperClient, JumperBackendError } from '@/services/jumper/client'
 
-export const getMyActions = async () => {
-  const response = await jumperClient.get<PlayableAction[]>('/v1/actions/mine')
+export const getMyActions = async (params: { search?: string } = {}) => {
+  const response = await jumperClient.get<PlayableAction[]>(
+    '/v1/actions/mine',
+    {
+      params
+    }
+  )
   if (response.status !== 200) throw new JumperBackendError(response)
   return response.data
 }

@@ -43,10 +43,15 @@ import jumper from '@/services/jumper'
 import { useQuery } from '@/composables'
 import { Loader2 } from 'lucide-vue-next'
 import ActionCard from './ActionCard.vue'
-import { useSystemStore, useAuthUserStore } from '@/stores'
+import {
+  useSystemStore,
+  useAuthUserStore,
+  useTitleBarOptionsStore
+} from '@/stores'
 import { storeToRefs } from 'pinia'
 
 const { systemInfo } = storeToRefs(useSystemStore())
+const { search } = storeToRefs(useTitleBarOptionsStore())
 const { user } = storeToRefs(useAuthUserStore())
 
 const backgroundImage = computed(() => {
@@ -62,8 +67,10 @@ const backgroundImage = computed(() => {
 })
 
 const { data: actions, isFetched } = useQuery<PlayableAction[]>(
-  ['playable-actions'],
-  jumper.actions.getMyActions
+  ['playable-actions', search],
+  () => {
+    return jumper.actions.getMyActions({ search: search.value })
+  }
 )
 
 const actionsBySection = computed(() => {
@@ -82,7 +89,10 @@ const actionsBySection = computed(() => {
 })
 
 const isManySections = computed(() => {
-  return Object.keys(actionsBySection.value).length > 1
+  return (
+    Object.keys(actionsBySection.value).length > 1 ||
+    Object.keys(actionsBySection.value)[0] !== 'Others'
+  )
 })
 
 const orderedSections = computed(() => {

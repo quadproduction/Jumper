@@ -4,9 +4,8 @@
       bg-slate-100 p-2 pb-1 transition-all dark:bg-slate-800"
     :class="{
       'hover:shadow-md': !hasOptions || optionsExec?.options.value,
-      'cursor-not-allowed opacity-65 pointer-events-none':
-        hasOptions &&
-        !optionsExec?.options.value?.length
+      'pointer-events-none cursor-not-allowed opacity-65':
+        hasOptions && !optionsExec?.options.value?.length
     }"
     @click="execAction(null)"
   >
@@ -65,7 +64,10 @@
             >
               <Loader2 class="animate-spin text-slate-500" />
             </p>
-            <p class="ml-[16px] flex w-[100px] justify-center truncate" v-else-if="optionsExec?.options.value?.length == 0">
+            <p
+              class="ml-[16px] flex w-[100px] justify-center truncate"
+              v-else-if="optionsExec?.options.value?.length == 0"
+            >
               <Minus />
             </p>
             <p class="ml-[16px] flex w-[100px] justify-center truncate" v-else>
@@ -74,7 +76,7 @@
           </template>
           <template #list-item="{ label }"
             ><p
-              class="w-full text-center truncate text-xs font-semibold italic text-slate-500
+              class="w-full truncate text-center text-xs font-semibold italic text-slate-500
                 dark:text-slate-400"
               @click="() => execAction(label as string)"
             >
@@ -88,35 +90,26 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
 import type { PlayableAction } from '@@types'
 import { Carrot, Loader2, X, Minus } from 'lucide-vue-next'
 import { Combobox } from '@@materials/input'
-import { useActionExec } from './useActionExec'
+import { useActionExecStore } from '@/stores'
 import { useToast } from '@@materials/ui/toast'
 
 const props = defineProps<{
   action: PlayableAction
 }>()
 
+const useActionExec = useActionExecStore()
+
 const { toast } = useToast()
 
-const { hasOptions, getOptions, exec } = useActionExec(() => props.action)
+const { hasOptions, getOptions, exec } = useActionExec.useAction(props.action)
 const optionsExec = getOptions()
 
-onMounted(async () => {
-  if (optionsExec) {
-    const timeout = setTimeout(() => {
-      optionsExec?.kill()
-    }, 5000)
-    await optionsExec.exec()
-    clearTimeout(timeout)
-  }
-})
-
-onUnmounted(() => {
-  optionsExec?.kill()
-})
+if (optionsExec && !optionsExec?.isRunning.value && !optionsExec?.options.value) {
+  optionsExec?.exec()
+}
 
 const execAction = async (option: string | null) => {
   if (optionsExec?.isRunning.value) return
