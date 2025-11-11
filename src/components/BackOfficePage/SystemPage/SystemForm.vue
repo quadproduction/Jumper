@@ -15,12 +15,12 @@
       <div class="flex flex-col gap-2">
         <h2 class="font-semibold">Appearance preferences</h2>
         <div
-          class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
+          class="pl-2 flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
         >
           <Switch v-model="allowBackgroundImage" />
           Use custom background images
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 pl-2 ">
           <div
             class="w-[200px] overflow-hidden"
             :class="{ 'opacity-50': !allowBackgroundImage }"
@@ -44,8 +44,8 @@
               </div>
             </AspectRatio>
           </div>
-          
-          <div class="flex flex-col gap-2 pl-2 items-start">
+
+          <div class="flex flex-col items-start gap-2 pl-2">
             <div
               class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
             >
@@ -57,7 +57,7 @@
                 Allow user to set custom background images
               </p>
             </div>
-            <div class="flex flex-col gap-1 items-start">
+            <div class="flex flex-col items-start gap-1">
               <EditDefaultBackgroundImage
                 :system-info="systemInfo"
                 :disabled="!allowBackgroundImage"
@@ -69,6 +69,20 @@
               />
             </div>
           </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-3 pl-2">
+        <div
+          class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
+        >
+          <Switch v-model="allowActionSections" />
+          Allow action sections
+        </div>
+        <div
+          class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
+        >
+          <Switch v-model="allowUsersToHideActions" />
+          Allow users to hide actions
         </div>
       </div>
     </div>
@@ -110,6 +124,12 @@ const { value: allowUserCustomBackgroundImage } = useField<boolean>(
 const { value: allowBackgroundImage } = useField<boolean>(
   'allowBackgroundImage'
 )
+
+const { value: allowUsersToHideActions } = useField<boolean>(
+  'allowUsersToHideActions'
+)
+
+const { value: allowActionSections } = useField<boolean>('allowActionSections')
 
 const systemStore = useSystemStore()
 
