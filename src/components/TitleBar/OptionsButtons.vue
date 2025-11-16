@@ -1,6 +1,7 @@
 <template>
   <div class="flex items-center gap-1 pr-2">
     <button
+      v-if="!isPalletteDisabled()"
       class="group rounded-full p-[3px] transition-colors hover:bg-slate-200
         dark:hover:bg-slate-800"
       @click="() => (isThemingBarOpen = !isThemingBarOpen)"
@@ -22,7 +23,7 @@
       />
     </button>
     <component
-      :is="router.currentRoute.value.name !== 'home' ? 'div' : 'RouterLink'"
+      :is="isSettingDisabled() ? 'div' : 'RouterLink'"
       :to="{ name: 'settings' }"
       class="group rounded-full p-[3px] transition-colors"
       :class="{
@@ -55,6 +56,7 @@ const router = useRouter()
 const debugWindowStore = useDebugWindowStore()
 
 const isSettingDisabled = () => router.currentRoute.value.name !== 'home'
+const isPalletteDisabled = () => router.currentRoute.value.name !== 'home'
 const { isThemingBarOpen } = storeToRefs(useTitleBarOptionsStore())
 
 const openDebugWindow = () => {

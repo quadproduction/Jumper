@@ -5,7 +5,8 @@
     :class="{
       'hover:shadow-md': !hasOptions || optionsExec?.options.value,
       'pointer-events-none cursor-not-allowed opacity-65':
-        hasOptions && !optionsExec?.options.value?.length
+        hasOptions && !optionsExec?.options.value?.length,
+      'pointer-events-none cursor-not-allowed': readonly
     }"
     @click="execAction(null)"
   >
@@ -42,7 +43,7 @@
             hover:text-slate-700 dark:bg-slate-700 dark:text-slate-400"
           :class="{
             'pointer-events-none cursor-not-allowed':
-              !optionsExec?.options.value?.length
+              !optionsExec?.options.value?.length || readonly
           }"
           :items="optionsExec?.options.value ?? []"
           list-item-class="cursor-pointer p-1 data-[highlighted]:bg-slate-200 dark:data-[highlighted]:bg-slate-800"
@@ -54,7 +55,11 @@
           <template #selection>
             <p
               class="ml-[16px] w-[100px] justify-center truncate text-center"
-              v-if="optionsExec?.options.value?.length"
+              v-if="readonly"
+            ></p>
+            <p
+              class="ml-[16px] w-[100px] justify-center truncate text-center"
+              v-else-if="optionsExec?.options.value?.length"
             >
               {{ optionsExec?.options.value[0] }}
             </p>
@@ -98,6 +103,7 @@ import { useToast } from '@@materials/ui/toast'
 
 const props = defineProps<{
   action: PlayableAction
+  readonly?: boolean
 }>()
 
 const useActionExec = useActionExecStore()
@@ -107,12 +113,17 @@ const { toast } = useToast()
 const { hasOptions, getOptions, exec } = useActionExec.useAction(props.action)
 const optionsExec = getOptions()
 
-if (optionsExec && !optionsExec?.isRunning.value && !optionsExec?.options.value) {
+if (
+  !props.readonly &&
+  optionsExec &&
+  !optionsExec?.isRunning.value &&
+  !optionsExec?.options.value
+) {
   optionsExec?.exec()
 }
 
 const execAction = async (option: string | null) => {
-  if (optionsExec?.isRunning.value) return
+  if (optionsExec?.isRunning.value || props.readonly) return
   if (hasOptions.value && !optionsExec?.options.value) return
   const opt = option || optionsExec?.options.value?.[0] || null
   await exec(opt)

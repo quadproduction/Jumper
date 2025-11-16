@@ -21,12 +21,18 @@
             {{ sectionName }}
           </h2>
           <div class="flex flex-wrap justify-start gap-4 p-4 px-3">
-            <ActionCard
-              class="h-[145px] w-[130px]"
+            <div
               v-for="action in actionsBySection[sectionName]"
               :key="action.id"
-              :action="action"
-            />
+              class="relative"
+            >
+              <ActionCard
+                class="h-[145px] w-[130px]"
+                :action="action"
+                :readonly="isThemingBarOpen"
+              />
+              <!-- <HideActionButton v-if="isThemingBarOpen" /> -->
+            </div>
           </div>
         </div>
       </div>
@@ -45,6 +51,7 @@ import { useQuery } from '@/composables'
 import { Loader2 } from 'lucide-vue-next'
 import ActionCard from './ActionCard.vue'
 import ThemingBar from './ThemingBar.vue'
+import HideActionButton from './HideActionButton.vue'
 import {
   useSystemStore,
   useAuthUserStore,
@@ -53,7 +60,7 @@ import {
 import { storeToRefs } from 'pinia'
 
 const { systemInfo } = storeToRefs(useSystemStore())
-const { search } = storeToRefs(useTitleBarOptionsStore())
+const { search, isThemingBarOpen } = storeToRefs(useTitleBarOptionsStore())
 const { user } = storeToRefs(useAuthUserStore())
 
 const backgroundImage = computed(() => {

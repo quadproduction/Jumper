@@ -113,7 +113,7 @@ import {
   SelectValue
 } from '@@materials/ui/select'
 import { Label } from '@@materials/ui/label'
-import Moon from '@/components/TitleBar/Moon.vue'
+import Moon from '@/components/GalleryPage/Moon.vue'
 import { Sun, SunMoon, Carrot, Save } from 'lucide-vue-next'
 import { Switch } from '@@materials/ui/switch'
 import { AspectRatio } from '@@materials/ui/aspect-ratio'
