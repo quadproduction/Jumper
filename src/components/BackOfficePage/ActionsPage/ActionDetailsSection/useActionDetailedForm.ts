@@ -44,7 +44,7 @@ export const useActionDetailedForm = (
         description: z.string().max(500).optional(),
         isPublic: z.boolean().default(false),
         isActive: z.boolean().default(false),
-        thumbnailUrl: z.string().url().optional(),
+        thumbnailKey: z.string().optional(),
         section: z.string().nullable().optional(),
         workspace: z.number().nullable().optional(),
         permissions: z

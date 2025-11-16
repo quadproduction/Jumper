@@ -32,6 +32,7 @@ export type DetailedAction = Action & {
   roles: DetailedRole[]
   workspace: Workspace['id'] | null
   role_ids?: DetailedRole['id'][]
+  thumbnailKey?: string
 }
 
 export type Permissions = {

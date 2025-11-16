@@ -84,7 +84,8 @@ export const updateActionThumbnail = async (
   const formData = new FormData()
   formData.append('thumbnail', thumbnail)
   const response = await jumperClient.put<{
-    thumbnailUrl: string
+    url: string
+    key: string
   }>(`/v1/actions/${id}/thumbnail`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'

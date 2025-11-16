@@ -52,11 +52,11 @@ export const useActions = () => {
     actionId: DetailedAction['id'],
     thumbnail: File
   ) => {
-    const { thumbnailUrl } = await jumper.actions.updateActionThumbnail(
+    const { url, key } = await jumper.actions.updateActionThumbnail(
       actionId,
       thumbnail
     )
-    return thumbnailUrl
+    return { url, key }
   }
 
   const remove = async (actionId: DetailedAction['id']) => {

@@ -121,8 +121,8 @@
                 <ImagePlus class="size-6" />
               </div>
               <img
-                v-if="thumbnailUrl || actionDetailed?.thumbnailUrl"
-                :src="thumbnailUrl || actionDetailed?.thumbnailUrl"
+                v-if="newThumbnailUrl || actionDetailed?.thumbnailUrl"
+                :src="newThumbnailUrl || actionDetailed?.thumbnailUrl"
                 class="h-full w-full rounded-md object-contain"
               />
               <div
@@ -140,6 +140,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Workspace } from '@@types'
 import { useField } from 'vee-validate'
 import { useFileDialog } from '@vueuse/core'
@@ -165,7 +166,8 @@ const props = defineProps<{
 const { actionDetailed } = props.actionsComposable
 const { value: isPublic } = useField<boolean>('isPublic')
 const { value: isActive } = useField<boolean>('isActive')
-const { value: thumbnailUrl } = useField<string | null>('thumbnailUrl')
+const { value: thumbnailKey } = useField<string | null>('thumbnailKey')
+const newThumbnailUrl = ref<string | null>(null)
 
 const { open, onChange } = useFileDialog({
   multiple: false,
@@ -178,10 +180,12 @@ onChange(async (files) => {
   if (files && files.length > 0 && actionDetailed.value) {
     const file = files[0]
     try {
-      thumbnailUrl.value = await props.actionsComposable.updateThumbnail(
+      const { url, key } = await props.actionsComposable.updateThumbnail(
         actionDetailed.value.id,
         file
       )
+      newThumbnailUrl.value = url
+      thumbnailKey.value = key
     } catch (error) {
       if (error instanceof Error) {
         toast({
