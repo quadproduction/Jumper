@@ -95,7 +95,6 @@ import { useBackendInfoStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 
 const jumperVersion = ref<string | null>(null)
-const carrotVersion = ref<string | null>(null)
 
 getVersion().then((version) => {
   jumperVersion.value = version

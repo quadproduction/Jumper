@@ -1,5 +1,8 @@
+import type { InternalAxiosRequestConfig } from 'axios'
 import { jumperClient } from '@/services/jumper/client'
 import { load } from '@tauri-apps/plugin-store'
+
+
 
 const LOGIN_PAGE_PATH: string = '/login'
 
@@ -61,12 +64,16 @@ jumperClient.interceptors.request.use(async (config) => {
   return config
 })
 
+interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean
+}
+
 jumperClient.interceptors.response.use(async (response) => {
   // Manage token refresh queue to avoid multiple refresh calls
   if (response.status !== 401) {
     return response
   }
-  const originalRequest = response.config
+  const originalRequest = response.config as RetryAxiosRequestConfig
   if (originalRequest._retry) return Promise.reject(response)
   originalRequest._retry = true
 

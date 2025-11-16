@@ -61,7 +61,7 @@ import { getUserDisplayName } from '@/services/helpers/userName'
 import { BackOfficeHeader, BackOfficePageLayout } from '../../@common'
 import DeleteAccountButton from './modals/DeleteAccountButton.vue'
 
-import { Save, Loader2, LogOut, Lock } from 'lucide-vue-next'
+import { Save, Loader2, LogOut } from 'lucide-vue-next'
 import { InputField } from '@@materials/input'
 
 const authUserStore = useAuthUserStore()

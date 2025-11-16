@@ -51,7 +51,7 @@ import { useQuery } from '@/composables'
 import { Loader2 } from 'lucide-vue-next'
 import ActionCard from './ActionCard.vue'
 import ThemingBar from './ThemingBar.vue'
-import HideActionButton from './HideActionButton.vue'
+// import HideActionButton from './HideActionButton.vue'
 import {
   useSystemStore,
   useAuthUserStore,
