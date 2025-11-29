@@ -1,8 +1,8 @@
 import type { InternalAxiosRequestConfig } from 'axios'
-import { jumperClient } from '@/services/jumper/client'
+
 import { load } from '@tauri-apps/plugin-store'
 
-
+import { jumperClient } from '@/services/jumper/client'
 
 const LOGIN_PAGE_PATH: string = '/login'
 
@@ -55,10 +55,10 @@ export const clearTokens = async () => {
 }
 
 // --- Interceptors ---
-jumperClient.interceptors.request.use(async (config) => {
+jumperClient.interceptors.request.use(async config => {
   // Add Authorization header if token exists
   const token = await getAccessToken()
-  if (token) {
+  if (token && !['/v1/', '/v1/auth'].includes(config.url || '')) {
     config.headers['Authorization'] = `Bearer ${token}`
   }
   return config
@@ -68,7 +68,7 @@ interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
 }
 
-jumperClient.interceptors.response.use(async (response) => {
+jumperClient.interceptors.response.use(async response => {
   // Manage token refresh queue to avoid multiple refresh calls
   if (response.status !== 401) {
     return response
@@ -83,7 +83,7 @@ jumperClient.interceptors.response.use(async (response) => {
       failedQueue.push({ resolve, reject })
     })
       .then(() => jumperClient(originalRequest))
-      .catch((err) => Promise.reject(err))
+      .catch(err => Promise.reject(err))
   }
 
   isRefreshing = true
@@ -95,7 +95,7 @@ jumperClient.interceptors.response.use(async (response) => {
     const refreshResponse = await jumperClient.post('/v1/auth/refresh', {
       refresh: refreshToken
     })
-    
+
     if (refreshResponse.status !== 200)
       throw new Error('Failed to refresh token')
 
@@ -120,7 +120,7 @@ let isRefreshing = false
 let failedQueue: { resolve: Function; reject: Function }[] = []
 
 function processQueue(error: any) {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach(prom => {
     error ? prom.reject(error) : prom.resolve()
   })
   failedQueue = []
