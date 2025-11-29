@@ -1,13 +1,16 @@
-import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
-import tailwindcss from "@tailwindcss/vite";
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
-const host = process.env.TAURI_DEV_HOST;
+const host = process.env.TAURI_DEV_HOST
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [vue(), tailwindcss(), tsconfigPaths()],
+  build: {
+    target: 'esnext'
+  },
   clearScreen: false,
   server: {
     port: 5173,
