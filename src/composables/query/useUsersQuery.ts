@@ -1,7 +1,12 @@
-import type { Page, User, Order } from '@@types'
+import type { Order, Page, User } from '@@types'
+
 import { ref } from 'vue'
-import { useQuery, useQueryPage, useQuerySearch } from '.'
+
 import jumper from '@/services/jumper'
+
+import { useQuery } from './useQuery'
+import { useQueryPage } from './useQueryPage'
+import { useQuerySearch } from './useQuerySearch'
 
 export const useUsersQuery = (
   options: {

@@ -1,7 +1,11 @@
-import type { Page, DetailedWorkspace, Order } from '@@types'
+import type { DetailedWorkspace, Order, Page } from '@@types'
+
 import { ref } from 'vue'
-import { useQuery, useQueryPage, useQuerySearch } from '@/composables/query'
+
 import jumper from '@/services/jumper'
+import { useQuery } from '@/composables/query/useQuery'
+import { useQueryPage } from '@/composables/query/useQueryPage'
+import { useQuerySearch } from '@/composables/query/useQuerySearch'
 
 export const useWorkspacesQuery = (
   options: {

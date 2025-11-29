@@ -2,10 +2,7 @@
   <BackOfficePageLayout>
     <BackOfficeHeader title="Groups" description="Manage SSO groups." />
     <div class="flex items-center gap-4">
-      <SearchBar
-        v-model="search"
-        class="mr-auto w-[280px] shrink"
-      />
+      <SearchBar v-model="search" class="mr-auto w-[280px] shrink" />
     </div>
     <TableLayout
       class="my-3 h-full"
@@ -40,16 +37,15 @@
 </template>
 
 <script setup lang="ts">
-import { useGroupsQuery } from '@/composables/query'
-import { SearchBar } from '@/components/@materials/input'
-import {
-  BackOfficePageLayout,
-  BackOfficeHeader
-} from '@/components/BackOfficePage/@common'
-import { TableLayout } from '@/components/@materials/table'
-import { PaginationFooter } from '@/components/@materials/table'
+import { useGroupsQuery } from '@/composables/query/useGroupsQuery'
+
+import { OrderByButton, SearchBar } from '@/components/@materials/input'
+import { PaginationFooter, TableLayout } from '@/components/@materials/table'
 import { TableHead } from '@/components/@materials/ui/table'
-import { OrderByButton } from '@/components/@materials/input'
+import {
+  BackOfficeHeader,
+  BackOfficePageLayout
+} from '@/components/BackOfficePage/@common'
 import GroupRow from './GroupRow.vue'
 
 const {

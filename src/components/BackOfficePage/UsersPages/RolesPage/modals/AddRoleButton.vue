@@ -36,7 +36,7 @@
             />
             <template v-else v-for="user in usersPage?.results" :key="user.id">
               <CommandItem
-                v-if="!items.some((item) => item.value.id === user.id)"
+                v-if="!items.some(item => item.value.id === user.id)"
                 class="flex gap-1"
                 :value="
                   user.username + user.firstName + user.lastName + user.email
@@ -71,7 +71,7 @@
             />
             <template v-for="group in groupsPage?.results" :key="group.id">
               <CommandItem
-                v-if="!items.some((item) => item.value.id === group.id)"
+                v-if="!items.some(item => item.value.id === group.id)"
                 class="flex gap-1"
                 :value="group.name"
                 @select.prevent="addTag(group)"
@@ -88,19 +88,21 @@
 </template>
 
 <script setup lang="ts">
-import { Group, User, Action } from '@@types'
-import { useRoleForm } from './useRoleForm'
-import jumper from '@/services/jumper'
-import { useToast } from '@@materials/ui/toast'
-import { useBackendInfoStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-import { useUsersQuery, useGroupsQuery } from '@/composables/query'
+import { Action, Group, User } from '@@types'
 import { Loader2, UserCog, UserIcon, UsersIcon } from 'lucide-vue-next'
-import { Button } from '@@materials/ui/button'
-import { FormModal } from '@@materials/modal'
-import { InputField, TextareaField, TagsField } from '@@materials/input'
-import { CommandItem } from '@@materials/ui/command'
+import { storeToRefs } from 'pinia'
 
+import jumper from '@/services/jumper'
+import { useBackendInfoStore } from '@/stores'
+import { useGroupsQuery } from '@/composables/query/useGroupsQuery'
+import { useUsersQuery } from '@/composables/query/useUsersQuery'
+
+import { InputField, TagsField, TextareaField } from '@@materials/input'
+import { FormModal } from '@@materials/modal'
+import { Button } from '@@materials/ui/button'
+import { CommandItem } from '@@materials/ui/command'
+import { useToast } from '@@materials/ui/toast'
+import { useRoleForm } from './useRoleForm'
 
 const { toast } = useToast()
 
@@ -131,7 +133,7 @@ const {
   searchNeeded: true
 })
 
-const onSubmit = roleForm.handleSubmit(async (values) => {
+const onSubmit = roleForm.handleSubmit(async values => {
   try {
     await jumper.roles.create({
       name: values.name,

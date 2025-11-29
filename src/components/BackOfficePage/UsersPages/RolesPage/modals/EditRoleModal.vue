@@ -27,7 +27,7 @@
           />
           <template v-else v-for="user in usersPage?.results" :key="user.id">
             <CommandItem
-              v-if="!items.some((item) => item.value.id === user.id)"
+              v-if="!items.some(item => item.value.id === user.id)"
               class="flex gap-1"
               :value="
                 user.username + user.firstName + user.lastName + user.email
@@ -62,7 +62,7 @@
           />
           <template v-for="group in groupsPage?.results" :key="group.id">
             <CommandItem
-              v-if="!items.some((item) => item.value.id === group.id)"
+              v-if="!items.some(item => item.value.id === group.id)"
               class="flex gap-1"
               :value="group.name"
               @select.prevent="addTag(group)"
@@ -78,17 +78,21 @@
 </template>
 
 <script setup lang="ts">
-import type { Role, DetailedRole, User, Group } from '@@types'
-import { useRoleForm } from './useRoleForm'
+import type { DetailedRole, Group, Role, User } from '@@types'
+
+import { Loader2, UserIcon, UsersIcon } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
+
 import jumper from '@/services/jumper'
 import { useBackendInfoStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-import { useToast } from '@@materials/ui/toast'
+import { useGroupsQuery } from '@/composables/query/useGroupsQuery'
+import { useUsersQuery } from '@/composables/query/useUsersQuery'
+
+import { InputField, TagsField, TextareaField } from '@@materials/input'
 import { FormModal } from '@@materials/modal'
-import { InputField, TextareaField, TagsField } from '@@materials/input'
 import { CommandItem } from '@@materials/ui/command'
-import { UsersIcon, Loader2, UserIcon } from 'lucide-vue-next'
-import { useUsersQuery, useGroupsQuery } from '@/composables/query'
+import { useToast } from '@@materials/ui/toast'
+import { useRoleForm } from './useRoleForm'
 
 const { toast } = useToast()
 
@@ -101,7 +105,7 @@ const { isScimEnabled } = storeToRefs(useBackendInfoStore())
 
 const emit = defineEmits<{ roleUpdated: [role: Role] }>()
 
-const onSubmit = userForm.handleSubmit(async (values) => {
+const onSubmit = userForm.handleSubmit(async values => {
   try {
     const roleUpdated = await jumper.roles.update(props.role.id, {
       ...values,

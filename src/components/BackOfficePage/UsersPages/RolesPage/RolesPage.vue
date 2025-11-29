@@ -49,21 +49,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRolesQuery } from '@/composables/query'
-import { useAuthUserStore } from '@/stores'
-import {
-  BackOfficePageLayout,
-  BackOfficeHeader
-} from '@/components/BackOfficePage/@common'
-import { SearchBar } from '@@materials/input'
-import { TableLayout } from '@@materials/table'
-import { PaginationFooter } from '@@materials/table'
-import { TableHead } from '@@materials/ui/table'
-import { OrderByButton } from '@@materials/input'
-import RoleRow from './RoleRow.vue'
-import { useBackendInfoStore } from '@/stores'
 import { storeToRefs } from 'pinia'
+
+import { useAuthUserStore, useBackendInfoStore } from '@/stores'
+import { useRolesQuery } from '@/composables/query/useRolesQuery'
+
+import { OrderByButton, SearchBar } from '@@materials/input'
+import { PaginationFooter, TableLayout } from '@@materials/table'
+import { TableHead } from '@@materials/ui/table'
+import {
+  BackOfficeHeader,
+  BackOfficePageLayout
+} from '@/components/BackOfficePage/@common'
 import { AddRoleButton } from './modals'
+import RoleRow from './RoleRow.vue'
 
 const authUserStore = useAuthUserStore()
 const { isScimEnabled } = storeToRefs(useBackendInfoStore())

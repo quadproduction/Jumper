@@ -1,7 +1,12 @@
-import type { Page, Order, DetailedRole } from '@@types'
+import type { DetailedRole, Order, Page } from '@@types'
+
 import { ref } from 'vue'
-import { useQuery, useQueryPage, useQuerySearch } from '.'
+
 import jumper from '@/services/jumper'
+
+import { useQuery } from './useQuery'
+import { useQueryPage } from './useQueryPage'
+import { useQuerySearch } from './useQuerySearch'
 
 export const useRolesQuery = (
   options: {
