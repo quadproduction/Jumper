@@ -2,9 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main", "debug", "updater"
-  ],
+  "windows": ["main", "debug", "updater"],
   "permissions": [
     "core:default",
     {
@@ -60,7 +58,6 @@
     "fs:allow-template-write-recursive",
     "log:default",
     "fs:default",
-    "app-exit:default",
     "dialog:allow-open",
     "core:webview:allow-create-webview-window",
     "store:default"

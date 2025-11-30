@@ -1,6 +1,6 @@
 use std::io::Write;
 use std::process::Command;
-use tauri::{Manager, Runtime, Webview};
+use tauri::{Manager, Runtime, Webview, WindowEvent};
 use tauri_plugin_deep_link::DeepLinkExt;
 use tauri_plugin_updater::UpdaterExt;
 use tempfile::NamedTempFile;
@@ -111,7 +111,6 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_app_exit::init())
         .plugin(
             tauri_plugin_log::Builder::new()
                 .max_file_size(100_000_000 /* bytes */)
@@ -129,6 +128,23 @@ pub fn run() {
             #[cfg(desktop)]
             app.deep_link().register_all()?;
             Ok(())
+        })
+        .on_window_event(|window, event| {
+            let app = window.app_handle();
+
+            match event {
+                WindowEvent::Destroyed => {
+                    let visible_webviews = app.webview_windows()
+                        .iter()
+                        .filter(|(_, w)| w.is_visible().unwrap_or(false))
+                        .count();
+                    if visible_webviews == 0 {
+                        println!("No visible webviews remaining, exiting app.");
+                        app.exit(0);
+                    }
+                }
+                _ => {}
+            }
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
