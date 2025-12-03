@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import type { Log } from '@/stores/logsStore'
 
-const props = defineProps<{
+defineProps<{
   showedLogs: Log[]
 }>()
 </script>

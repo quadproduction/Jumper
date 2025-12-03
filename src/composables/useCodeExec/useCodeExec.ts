@@ -1,18 +1,17 @@
 import type { User } from '@@types'
+import type { Child } from '@tauri-apps/plugin-shell'
+import type { MaybeRefOrGetter } from 'vue'
+
+import { onUnmounted, ref, toRef, watch } from 'vue'
 import { invoke } from '@tauri-apps/api/core'
-import { writeTempCodeFile, removeTempCodeFile } from './tempCodeFile'
-import { Command, type Child } from '@tauri-apps/plugin-shell'
-import {
-  type MaybeRefOrGetter,
-  ref,
-  toRef,
-  onUnmounted,
-  watch
-} from 'vue'
-import { useAuthUserStore } from '@/stores'
-import { useLogsStore } from '@/stores/logsStore'
+import { Command } from '@tauri-apps/plugin-shell'
 import { storeToRefs } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
+
+import { useAuthUserStore } from '@/stores'
+import { useLogsStore } from '@/stores/logsStore'
+
+import { removeTempCodeFile, writeTempCodeFile } from './tempCodeFile'
 
 export type ExecMode = 'python' | 'cmd' | 'get-options'
 type UserInfo = {
@@ -25,7 +24,7 @@ type UserInfo = {
 
 export type CodeExec = {
   id: string
-  exec: (option: string | null) => Promise<string[] | null> 
+  exec: (option: string | null) => Promise<string[] | null>
   kill: () => Promise<void>
   mode: ExecMode
   namespace: string
@@ -36,7 +35,6 @@ export type CodeExec = {
 }
 
 export type CodeExecComposable = ReturnType<typeof useCodeExec>
-
 
 export const useCodeExec = (
   mode: MaybeRefOrGetter<ExecMode>,
@@ -84,7 +82,7 @@ export const useCodeExec = (
     })
     if (modeRef.value === 'get-options') {
       options.value = []
-      command.stdout.on('data', (data) => {
+      command.stdout.on('data', data => {
         const message = data.toString()
         if (message.startsWith(`${commandId} - options `)) {
           const optionsString = message.split('- options ')[1]
@@ -113,7 +111,7 @@ export const useCodeExec = (
 
   const setupLogging = (command: Command<string>, commandId: string) => {
     const execNamespace = namespaceRef.value
-    command.stdout.on('data', (data) => {
+    command.stdout.on('data', data => {
       const message = data.toString()
       if (message.startsWith(`${commandId} -`)) return
       pushLog({
@@ -123,7 +121,7 @@ export const useCodeExec = (
         message: data.toString()
       })
     })
-    command.stderr.on('data', (data) => {
+    command.stderr.on('data', data => {
       pushLog({
         level: 'error',
         execId: commandId,
@@ -131,7 +129,7 @@ export const useCodeExec = (
         message: data.toString()
       })
     })
-    command.on('error', (error) =>
+    command.on('error', error =>
       pushLog({
         level: 'error',
         execId: commandId,
@@ -185,7 +183,7 @@ export const useCodeExec = (
     isRunning,
     options,
     process,
-    runTimestamp,
+    runTimestamp
   }
 }
 
