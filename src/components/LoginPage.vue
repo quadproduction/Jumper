@@ -1,7 +1,6 @@
 <template>
   <div
-    class="relative flex h-full items-center justify-center gap-[150px] bg-slate-50
-      dark:bg-[#0e1c24]"
+    class="relative flex h-full items-center justify-center gap-[150px] bg-slate-50 dark:bg-[#0e1c24]"
   >
     <div class="relative w-[300px] max-lg:hidden">
       <img
@@ -18,13 +17,11 @@
       />
     </div>
     <div
-      class="flex w-full flex-col gap-4 rounded-md bg-white p-8 shadow-md sm:max-w-sm
-        dark:bg-slate-900"
+      class="flex w-full flex-col gap-4 rounded-md bg-white p-8 shadow-md sm:max-w-sm dark:bg-slate-900"
     >
       <div class="flex flex-col gap-3">
         <h1
-          class="mb-8 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl
-            dark:text-slate-200"
+          class="mb-8 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl dark:text-slate-200"
         >
           Jumper
         </h1>
@@ -64,7 +61,12 @@
           </div>
           <div class="grid w-full items-center gap-1.5">
             <Label for="password">Password</Label>
-            <Input id="password" type="password" required v-model.trim="password" />
+            <Input
+              id="password"
+              type="password"
+              required
+              v-model.trim="password"
+            />
           </div>
 
           <div value="flex flex-col">
@@ -78,7 +80,9 @@
             <span class="w-full border-t" />
           </div>
           <div class="relative flex justify-center text-xs uppercase">
-            <span class="bg-background text-muted-foreground px-2 dark:bg-slate-900">
+            <span
+              class="bg-background text-muted-foreground px-2 dark:bg-slate-900"
+            >
               Or continue with
             </span>
           </div>
@@ -96,15 +100,13 @@
       </template>
     </div>
     <div
-      class="absolute bottom-1 left-2 flex items-center gap-1 text-center text-xs
-        text-slate-400/80 italic dark:text-slate-500/80"
+      class="absolute bottom-1 left-2 flex items-center gap-1 text-center text-xs text-slate-400/80 italic dark:text-slate-500/80"
     >
       <p>Version : {{ appVersion }}</p>
     </div>
     <div
       v-if="isBackendReachable"
-      class="absolute right-2 bottom-1 flex items-center gap-1 text-center text-xs
-        text-slate-400/80 italic dark:text-slate-500/80"
+      class="absolute right-2 bottom-1 flex items-center gap-1 text-center text-xs text-slate-400/80 italic dark:text-slate-500/80"
     >
       <p>host : {{ backendUrl }}</p>
       <button
@@ -119,28 +121,28 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useToast } from '@@materials/ui/toast'
-import jumper from '@/services/jumper'
-import { openUrl } from '@tauri-apps/plugin-opener'
-import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
 import { getVersion } from '@tauri-apps/api/app'
-import { useUpdater } from '@/composables/useUpdater'
-
-import { useBackendInfoStore, useAuthUserStore } from '@/stores'
+import { onOpenUrl } from '@tauri-apps/plugin-deep-link'
+import { openUrl } from '@tauri-apps/plugin-opener'
 import { useDark } from '@vueuse/core'
+import { Edit, Loader2 } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
-import { Loader2, Edit } from 'lucide-vue-next'
+import jumper from '@/services/jumper'
+import { useAuthUserStore, useBackendInfoStore } from '@/stores'
+import { useUpdater } from '@/composables/useUpdater'
+
 import { Button } from '@@materials/ui/button'
 import { Input } from '@@materials/ui/input'
 import { Label } from '@@materials/ui/label'
+import { useToast } from '@@materials/ui/toast'
 
 const isDark = useDark()
 const appVersion = ref<string | null>(null)
 const updater = useUpdater()
 
-getVersion().then((version) => {
+getVersion().then(version => {
   appVersion.value = version
 })
 
@@ -153,7 +155,7 @@ const router = useRouter()
 const redirectToOidcProvider = async () => {
   if (!oidcRedirectUrl.value) return
   openUrl(oidcRedirectUrl.value)
-  await onOpenUrl(async (urls) => {
+  await onOpenUrl(async urls => {
     if (urls.length === 0) return
     const auth_url = new URL(urls[0])
     if (auth_url.host != 'oidc-auth-callback') {

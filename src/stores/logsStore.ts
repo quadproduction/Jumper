@@ -1,9 +1,8 @@
 import { ref } from 'vue'
+import * as tauriLog from '@tauri-apps/plugin-log'
 import { defineStore } from 'pinia'
 
-import * as tauriLog from '@tauri-apps/plugin-log'
-
-type Log = {
+export type Log = {
   level: 'info' | 'error' | 'warn' | 'debug' | 'trace'
   execId: string
   timestamp: string
@@ -23,7 +22,7 @@ export const useLogsStore = defineStore('logsConfig', () => {
   }
 
   const clearExecLog = (execId: string) => {
-    logs.value = logs.value.filter((log) => log.execId !== execId)
+    logs.value = logs.value.filter(log => log.execId !== execId)
   }
 
   const clearAll = () => {
