@@ -1,16 +1,71 @@
-# Tauri + Vue + TypeScript
+# 🐇 Jumper
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-## Recommended IDE Setup
+> #### _App & Script Launcher_
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Jumper is an advanced, open-source application and script launcher designed 
+to enhance productivity and streamline workflow management. It provides a 
+user-friendly interface for organizing and quickly accessing applications 
+and scripts for a wide range of users, complete with advanced rights 
+management features and customization options.
 
-## Type Support For `.vue` Imports in TS
+For more information, visit the official [Jumper website](https://jumper-app.com).
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+## 🚀 Getting Started
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+To get started with Jumper, you need to install both the Jumper desktop application 
+and the Carrot server component. 
+please refer to the dedicated [deployment repository](https://github.com/Jumper-Carrot/Carrot-deploy) 
+for detailed instructions.
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+## 🤝 Contributing
+
+For detailed guidelines on how to contribute to the Carrot project 
+(submitting bugs, feature requests, and Pull Requests), please 
+see the [CONTRIBUTING](https://github.com/Jumper-Carrot/Jumper?tab=contributing-ov-file) section.
+
+## 💻 Local Development
+
+Jumper is built with:
+
+[![Tauri](https://img.shields.io/badge/Tauri-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app/)
+[![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Rust](https://img.shields.io/badge/Rust-c98d1c?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+
+### ⚙️ Setup
+
+> **Prerequisites**: To launch Jumper in development mode, you need to install the Tauri & Rust prerequisites. The complete process is detailed in the official [Tauri Setup Guide](https://v2.tauri.app/start/prerequisites/). 
+
+> You also need to have [Node.js](https://nodejs.org/) installed on your machine.
+
+#### TL;DR (Quick Setup)
+
+```bash
+git clone https://github.com/Jumper-Carrot/Jumper.git
+cd Jumper
+npm install
+npm run tauri dev
+```
+
+-----
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/Jumper-Carrot/Jumper.git
+    cd Jumper
+    ```
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+3.  **Run Jumper in development mode:**
+
+    ```bash
+    npm run tauri dev
+    ```
+
+Refer to [Carrot repository](https://github.com/Jumper-Carrot/Carrot) for setting up the backend server locally.
