@@ -1,7 +1,8 @@
 <template>
   <div
     ref="logsContainer"
-    class="grow overflow-auto bg-slate-200 shadow-inner dark:bg-slate-800"
+    @scroll="handleScroll"
+    class="grow overflow-auto bg-slate-200 shadow-inner dark:bg-slate-800 log-scrollbar"
   >
     <div
       v-for="(log, i) in showedLogs"
@@ -29,7 +30,37 @@
 <script setup lang="ts">
 import type { Log } from '@/stores/logsStore'
 
-defineProps<{
+import { ref } from 'vue'
+
+import { useScrollToBottom } from './useScrollToBottom'
+
+const props = defineProps<{
   showedLogs: Log[]
 }>()
+
+const logsContainer = ref<HTMLDivElement | null>(null)
+
+const { handleScroll } = useScrollToBottom(
+  logsContainer,
+  () => props.showedLogs.length
+)
 </script>
+
+<style scoped>
+.log-scrollbar::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.log-scrollbar::-webkit-scrollbar:vertical {
+  width: 12px;
+}
+
+.log-scrollbar::-webkit-scrollbar-thumb {
+  background-color:;
+  border-radius: 0;
+}
+
+.log-scrollbar::-webkit-scrollbar-track {
+  border-radius: 0;
+}
+</style>
