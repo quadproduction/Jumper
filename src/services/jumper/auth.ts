@@ -70,7 +70,11 @@ interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
 
 jumperClient.interceptors.response.use(async response => {
   // Manage token refresh queue to avoid multiple refresh calls
-  if (response.status !== 401) {
+  console.log('Response status:', response)
+  if (
+    response.status !== 401 ||
+    response.request?.responseURL?.includes('/auth/refresh')
+  ) {
     return response
   }
   const originalRequest = response.config as RetryAxiosRequestConfig
@@ -90,12 +94,13 @@ jumperClient.interceptors.response.use(async response => {
 
   try {
     const refreshToken = await getRefreshToken()
-    if (!refreshToken) throw new Error('No refresh token available')
 
+    if (!refreshToken) throw new Error('No refresh token available')
+    console.log('Refreshing token...', refreshToken)
     const refreshResponse = await jumperClient.post('/v1/auth/refresh', {
       refresh: refreshToken
     })
-
+    console.error('Token refresh failed', refreshResponse.status)
     if (refreshResponse.status !== 200)
       throw new Error('Failed to refresh token')
 
@@ -108,6 +113,8 @@ jumperClient.interceptors.response.use(async response => {
     processQueue(err)
     await clearTokens()
     if (window.location.pathname !== LOGIN_PAGE_PATH) {
+      console.log('Redirecting to login page...')
+      console.log(response)
       window.location.href = LOGIN_PAGE_PATH
     }
     return Promise.reject(err)
