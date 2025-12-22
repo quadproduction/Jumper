@@ -1,14 +1,14 @@
-import { getCurrentWindow, getAllWindows } from '@tauri-apps/api/window'
-
-import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
-import { relaunch } from '@tauri-apps/plugin-process'
+import { h, ref } from 'vue'
 import { getVersion } from '@tauri-apps/api/app'
 import { invoke } from '@tauri-apps/api/core'
-import { Update, check as checkUpdates } from '@tauri-apps/plugin-updater'
-import { ref, h } from 'vue'
+import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
+import { getAllWindows, getCurrentWindow } from '@tauri-apps/api/window'
+import { relaunch } from '@tauri-apps/plugin-process'
+import { check as checkUpdates, Update } from '@tauri-apps/plugin-updater'
 
 import jumper from '@/services/jumper'
-import { useToast, ToastAction } from '@@materials/ui/toast'
+
+import { ToastAction, useToast } from '@@materials/ui/toast'
 
 type UpdateInfo = {
   rid: number
@@ -60,7 +60,6 @@ export const useUpdater = () => {
       try {
         updater = await checkUpdates()
         if (!updater) {
-          console.info('No updates available')
           status.value = 'NO-UPDATE'
           return
         }
@@ -169,7 +168,7 @@ export const useUpdater = () => {
 
   const checkUpdatePeriodicallyOnFocus = async () => {
     const windows = await getAllWindows()
-    const mainWindow = windows.find((window) => window.label === 'main') ?? null
+    const mainWindow = windows.find(window => window.label === 'main') ?? null
     if (mainWindow) {
       mainWindow.onFocusChanged(({ payload: focused }) => {
         if (!focused || !lastUpdateCheck) return
