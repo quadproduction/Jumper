@@ -1,7 +1,10 @@
-import { type MaybeRefOrGetter, toRef, computed } from 'vue'
 import type { PlayableAction } from '@@types'
-import { useCodeExec } from '@/composables/useCodeExec'
+import type { MaybeRefOrGetter } from 'vue'
+
+import { computed, toRef } from 'vue'
+
 import { useExecutionsStore } from '@/stores/execuctionsStore'
+import { useCodeExec } from '@/composables/useCodeExec'
 
 export type ActionExec = ReturnType<typeof useActionExec>
 
@@ -13,7 +16,7 @@ export const useActionExec = (action: MaybeRefOrGetter<PlayableAction>) => {
   const hasOptions = computed(() => {
     if (!actionRef.value) return false
     return (
-      ['Python', 'Windows'].includes(actionRef.value.data.type) &&
+      ['Python', 'Windows CMD'].includes(actionRef.value.data.type) &&
       'useCombobox' in actionRef.value.data &&
       actionRef.value.data['useCombobox']
     )

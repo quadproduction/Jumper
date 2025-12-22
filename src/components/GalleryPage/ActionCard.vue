@@ -10,7 +10,7 @@
     @click="execAction(null)"
   >
     <div
-      class="flex h-[78px] w-[78px] shrink-0 items-center justify-center rounded-md p-[2px]"
+      class="flex h-[78px] w-[78px] shrink-0 items-center justify-center rounded-md p-0.5"
     >
       <img
         v-if="action.thumbnailUrl"
@@ -49,28 +49,28 @@
         >
           <template #selection>
             <p
-              class="ml-[16px] w-[100px] justify-center truncate text-center"
+              class="ml-4 w-[100px] justify-center truncate text-center"
               v-if="readonly"
             ></p>
             <p
-              class="ml-[16px] w-[100px] justify-center truncate text-center"
+              class="ml-4 w-[100px] justify-center truncate text-center"
               v-else-if="optionsExec?.options.value?.length"
             >
               {{ optionsExec?.options.value[0] }}
             </p>
             <p
-              class="ml-[16px] flex w-[100px] justify-center truncate"
+              class="ml-4 flex w-[100px] justify-center truncate"
               v-else-if="optionsExec?.isRunning.value"
             >
               <Loader2 class="animate-spin text-slate-500" />
             </p>
             <p
-              class="ml-[16px] flex w-[100px] justify-center truncate"
+              class="ml-4 flex w-[100px] justify-center truncate"
               v-else-if="optionsExec?.options.value?.length == 0"
             >
               <Minus />
             </p>
-            <p class="ml-[16px] flex w-[100px] justify-center truncate" v-else>
+            <p class="ml-4 flex w-[100px] justify-center truncate" v-else>
               <X class="text-red-500" />
             </p>
           </template>
