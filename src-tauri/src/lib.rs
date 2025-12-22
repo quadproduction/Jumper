@@ -52,15 +52,21 @@ fn get_env_var(key: String) -> Option<String> {
     std::env::var(key).ok()
 }
 
+#[cfg(target_os = "windows")]
+use std::os::windows::process::CommandExt;
+
 #[tauri::command]
 async fn kill_process(pid: u32) -> Result<(), String> {
     // Kill the process with the given PID and its sub-process
     #[cfg(target_os = "windows")]
-    let output = Command::new("taskkill")
-        .args(&["/PID", &pid.to_string(), "/F", "/T"])
-        .output()
-        .map_err(|e| e.to_string())?;
-
+    let output = {
+        const CREATE_NO_WINDOW: u32 = 0x08000000;
+        Command::new("taskkill")
+            .args(&["/PID", &pid.to_string(), "/F", "/T"])
+            .creation_flags(CREATE_NO_WINDOW)
+            .output()
+            .map_err(|e| e.to_string())?
+    };
     #[cfg(any(target_os = "linux", target_os = "macos"))]
     let output = Command::new("kill")
         .args(&["-9", &pid.to_string()])
