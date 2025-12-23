@@ -1,5 +1,6 @@
 <template>
   <button
+    ref="card"
     class="custom-shadow flex flex-col items-center justify-center gap-2 rounded-md bg-slate-100 p-2 pb-1 transition-all dark:bg-slate-800"
     :class="{
       'hover:shadow-md': !hasOptions || optionsExec?.options.value,
@@ -91,6 +92,8 @@
 <script setup lang="ts">
 import type { PlayableAction } from '@@types'
 
+import { useTemplateRef, watch } from 'vue'
+import { useElementHover } from '@vueuse/core'
 import { Carrot, Loader2, Minus, X } from 'lucide-vue-next'
 
 import { useActionExecStore } from '@/stores'
@@ -106,6 +109,17 @@ const props = defineProps<{
 const useActionExec = useActionExecStore()
 
 const { toast } = useToast()
+
+const cardElement = useTemplateRef<HTMLButtonElement>('card')
+const isHovered = useElementHover(cardElement)
+
+const emits = defineEmits<{
+  (e: 'hover-change', value: boolean): void
+}>()
+
+watch(isHovered, value => {
+  emits('hover-change', value)
+})
 
 const { hasOptions, getOptions, exec } = useActionExec.useAction(props.action)
 const optionsExec = getOptions()

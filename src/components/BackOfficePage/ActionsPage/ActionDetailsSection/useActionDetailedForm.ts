@@ -1,9 +1,10 @@
 import type { DetailedAction } from '@@types'
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import type { DetailedGroup, DetailedRole, User } from '@@types/user'
+
 import { computed, MaybeRefOrGetter, toRef, watch } from 'vue'
-import type { User, DetailedGroup, DetailedRole } from '@@types/user'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
+import * as z from 'zod'
 
 export type ActionDetailedForm = ReturnType<typeof useActionDetailedForm>
 
@@ -41,7 +42,7 @@ export const useActionDetailedForm = (
     toTypedSchema(
       z.object({
         name: z.string().min(2).max(25),
-        description: z.string().max(500).optional(),
+        description: z.string().max(175).optional(),
         isPublic: z.boolean().default(false),
         isActive: z.boolean().default(false),
         thumbnailKey: z.string().optional(),
@@ -78,7 +79,7 @@ export const useActionDetailedForm = (
     keepValuesOnUnmount: true
   })
 
-  watch(actionRef, (newValue) => {
+  watch(actionRef, newValue => {
     if (!newValue) return
     form.resetForm()
     form.setValues(getInitialValues(newValue) ?? {})

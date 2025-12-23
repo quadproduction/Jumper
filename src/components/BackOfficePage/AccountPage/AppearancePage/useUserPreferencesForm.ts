@@ -1,6 +1,7 @@
 import type { UserPreferences } from '@@types'
-import { useForm } from 'vee-validate'
+
 import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
 import * as z from 'zod'
 
 export const useUserPreferencesForm = (
@@ -8,7 +9,8 @@ export const useUserPreferencesForm = (
 ): ReturnType<typeof useForm> => {
   const userPreferencesSchema = toTypedSchema(
     z.object({
-      disableDefaultBackgroundImage: z.boolean(),
+      allowShowingDescription: z.boolean(),
+      disableDefaultBackgroundImage: z.boolean()
     })
   )
   return useForm({

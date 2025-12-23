@@ -32,6 +32,13 @@
                 class="h-[145px] w-[130px]"
                 :action="action"
                 :readonly="isThemingBarOpen"
+                @hover-change="
+                  (isHover: boolean) => {
+                    if (action.description.length == 0) return
+                    isActionHovered = isHover
+                    if (isHover) lastHoveredAction = action
+                  }
+                "
               />
               <!-- <HideActionButton v-if="isThemingBarOpen" /> -->
             </div>
@@ -42,13 +49,23 @@
     <div v-else class="flex h-full items-center justify-center">
       <Loader2 class="text-muted-foreground h-8 w-8 animate-spin" />
     </div>
+    <DescriptionInfoCard
+      v-if="
+        systemInfo?.allowShowingDescription &&
+        user?.preferences.allowShowingDescription
+      "
+      :class="[
+        isActionHovered ? 'opacity-100 right-4' : 'opacity-0 -right-4 delay-200'
+      ]"
+      :action="lastHoveredAction"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PlayableAction } from '@@types'
 
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Loader2 } from 'lucide-vue-next'
 import { storeToRefs } from 'pinia'
 
@@ -61,12 +78,16 @@ import {
 import { useQuery } from '@/composables'
 
 import ActionCard from './ActionCard.vue'
+import DescriptionInfoCard from './DescriptionInfoCard.vue'
 import ThemingBar from './ThemingBar.vue'
 
 // import HideActionButton from './HideActionButton.vue'
 const { systemInfo } = storeToRefs(useSystemStore())
 const { search, isThemingBarOpen } = storeToRefs(useTitleBarOptionsStore())
 const { user } = storeToRefs(useAuthUserStore())
+
+const isActionHovered = ref(false)
+const lastHoveredAction = ref<PlayableAction | null>(null)
 
 const backgroundImage = computed(() => {
   if (!systemInfo.value?.allowBackgroundImage) return 'none'

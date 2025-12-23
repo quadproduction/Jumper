@@ -17,10 +17,16 @@
         <div
           class="pl-2 flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
         >
+          <Switch v-model="allowShowingDescription" />
+          Show action description on card hover
+        </div>
+        <div
+          class="pl-2 flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
+        >
           <Switch v-model="allowBackgroundImage" />
           Use custom background images
         </div>
-        <div class="flex gap-2 pl-2 ">
+        <div class="flex gap-2 pl-2">
           <div
             class="w-[200px] overflow-hidden"
             :class="{ 'opacity-50': !allowBackgroundImage }"
@@ -37,8 +43,7 @@
               />
               <div
                 v-else
-                class="flex h-full w-full items-center justify-center text-sm text-slate-400
-                  dark:text-slate-500"
+                class="flex h-full w-full items-center justify-center text-sm text-slate-400 dark:text-slate-500"
               >
                 <Carrot class="h-9 w-9 text-slate-300 dark:text-slate-500" />
               </div>
@@ -97,16 +102,19 @@
 
 <script setup lang="ts">
 import type { SystemInfo } from '@@types/system'
-import { useSystemForm } from './useSystemForm'
-import { useField } from 'vee-validate'
-import { useSystemStore } from '@/stores/systemStore'
-import { Button } from '@@materials/ui/button'
+
 import { Carrot, Save } from 'lucide-vue-next'
-import { Switch } from '@@materials/ui/switch'
-import { AspectRatio } from '@@materials/ui/aspect-ratio'
+import { useField } from 'vee-validate'
+
+import { useSystemStore } from '@/stores/systemStore'
 import { useConfirmToast } from '@/composables'
-import EditDefaultBackgroundImage from './modals/EditDefaultBackgroundImage.vue'
+
+import { AspectRatio } from '@@materials/ui/aspect-ratio'
+import { Button } from '@@materials/ui/button'
+import { Switch } from '@@materials/ui/switch'
 import DeleteBackgroundImageButton from './modals/DeleteBackgroundImageButton.vue'
+import EditDefaultBackgroundImage from './modals/EditDefaultBackgroundImage.vue'
+import { useSystemForm } from './useSystemForm'
 
 const props = defineProps<{
   systemInfo: SystemInfo
@@ -117,6 +125,10 @@ const { handleSubmit } = useSystemForm(props.systemInfo)
 const { value: allowActionWorkspaces } = useField<boolean>(
   'allowActionWorkspaces'
 )
+const { value: allowShowingDescription } = useField<boolean>(
+  'allowShowingDescription'
+)
+
 const { value: allowUserCustomBackgroundImage } = useField<boolean>(
   'allowUserCustomBackgroundImage'
 )
@@ -133,7 +145,7 @@ const { value: allowActionSections } = useField<boolean>('allowActionSections')
 
 const systemStore = useSystemStore()
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async values => {
   await useConfirmToast(
     async () => {
       await systemStore.updateSystemInfo(values)

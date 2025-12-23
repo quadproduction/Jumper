@@ -7,8 +7,7 @@
             <p class="font-semibold">Type :</p>
             <Badge
               variant="outline"
-              class="ml-1 flex items-center gap-1 rounded-md border-none bg-slate-100 px-2 py-1
-                text-sm shadow-xs dark:bg-slate-800"
+              class="ml-1 flex items-center gap-1 rounded-md border-none bg-slate-100 px-2 py-1 text-sm shadow-xs dark:bg-slate-800"
             >
               <div
                 class="flex h-4 w-4 shrink-0 items-center justify-center"
@@ -25,8 +24,7 @@
             </Badge>
           </div>
           <Switch
-            class="ml-auto h-[20px] w-[35px] rounded-full data-[state=checked]:bg-green-600
-              data-[state=unchecked]:bg-slate-300 dark:data-[state=unchecked]:bg-slate-500"
+            class="ml-auto h-5 w-[35px] rounded-full data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-slate-300 dark:data-[state=unchecked]:bg-slate-500"
             v-model="isActive"
           >
             <template #thumb>
@@ -36,7 +34,7 @@
                 <Check v-if="isActive" class="size-3 text-green-600" />
                 <div
                   v-else
-                  class="size-2 rounded-[2px] bg-slate-400 dark:bg-slate-500"
+                  class="size-2 rounded-xs bg-slate-400 dark:bg-slate-500"
                 />
               </div>
             </template>
@@ -57,7 +55,7 @@
               class="max-h-[60px] min-h-[60px] max-w-[600px] resize-none px-2 py-1"
               field-name="description"
               label="Description"
-              maxlength="500"
+              maxlength="175"
               :show-error-message="false"
             />
             <InputField
@@ -79,7 +77,7 @@
               itemKey="value"
               :items="[
                 { label: 'None', value: null },
-                ...workspaces.map((ws) => ({
+                ...workspaces.map(ws => ({
                   label: ws.name,
                   value: ws.id
                 }))
@@ -105,18 +103,14 @@
             <slot />
           </div>
           <div
-            class="group relative flex h-[78px] w-[78px] shrink-0 flex-col items-center gap-2
-              rounded-md border-slate-300 bg-slate-100 hover:cursor-pointer
-              hover:border-slate-400 hover:shadow-xs dark:border-slate-700 dark:bg-slate-800"
+            class="group relative flex h-[78px] w-[78px] shrink-0 flex-col items-center gap-2 rounded-md border-slate-300 bg-slate-100 hover:cursor-pointer hover:border-slate-400 hover:shadow-xs dark:border-slate-700 dark:bg-slate-800"
           >
             <button
               @click.prevent="() => open()"
               class="h-full w-full shrink-0"
             >
               <div
-                class="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center
-                  rounded-md bg-black text-center text-sm text-white opacity-0 transition-all
-                  group-hover:opacity-50"
+                class="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center rounded-md bg-black text-center text-sm text-white opacity-0 transition-all group-hover:opacity-50"
               >
                 <ImagePlus class="size-6" />
               </div>
@@ -140,20 +134,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { Workspace } from '@@types'
-import { useField } from 'vee-validate'
-import { useFileDialog } from '@vueuse/core'
-import { Switch } from '@@materials/ui/switch'
 import type { ActionsComposable } from '../../useActions'
+
+import { ref } from 'vue'
+import { useFileDialog } from '@vueuse/core'
+import { Carrot, Check, ImagePlus, Link } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
+import { useField } from 'vee-validate'
+
+import { useSystemStore } from '@/stores/systemStore'
+
+import { SelectField } from '@@materials/form'
+import { CheckboxField, InputField, TextareaField } from '@@materials/input'
+import { Badge } from '@@materials/ui/badge'
+import { Switch } from '@@materials/ui/switch'
 import { useToast } from '@@materials/ui/toast'
 import PermissionTagsField from '@/components/BackOfficePage/@common/PermissionTagsField.vue'
-import { InputField, TextareaField, CheckboxField } from '@@materials/input'
-import { SelectField } from '@@materials/form'
-import { Badge } from '@@materials/ui/badge'
-import { Check, Link, Carrot, ImagePlus } from 'lucide-vue-next'
-import { useSystemStore } from '@/stores/systemStore'
-import { storeToRefs } from 'pinia'
 
 const { systemInfo } = storeToRefs(useSystemStore())
 
@@ -176,7 +173,7 @@ const { open, onChange } = useFileDialog({
 
 const { toast } = useToast()
 
-onChange(async (files) => {
+onChange(async files => {
   if (files && files.length > 0 && actionDetailed.value) {
     const file = files[0]
     try {

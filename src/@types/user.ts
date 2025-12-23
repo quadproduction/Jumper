@@ -59,6 +59,7 @@ export type DetailedRole = Omit<Role, 'users' | 'groups'> & {
 
 export type UserPreferences = {
   readonly id: number
+  allowShowingDescription: boolean
   disableDefaultBackgroundImage: boolean
   customBackgroundImageUrl: string | null
 }

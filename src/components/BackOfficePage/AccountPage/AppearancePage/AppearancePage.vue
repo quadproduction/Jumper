@@ -12,7 +12,7 @@
     </div>
     <div class="flex h-full flex-col gap-4">
       <div class="flex w-full flex-col gap-2 overflow-auto pl-1">
-        <Label class="pl-1">Color mode</Label>
+        <Label>Color mode</Label>
         <div class="w-[110px]">
           <Select v-model:model-value="colorMode">
             <SelectTrigger class="h-[35px]">
@@ -32,6 +32,19 @@
           </Select>
         </div>
       </div>
+
+      <div
+        class="flex w-full flex-col gap-2 overflow-auto pl-1"
+        v-if="systemInfo && systemInfo.allowShowingDescription"
+      >
+        <Label class="">Description</Label>
+        <div
+          class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400"
+        >
+          <Switch v-model="allowShowingDescription" />
+          <p>Allow showing description on card hover</p>
+        </div>
+      </div>
       <div class="flex grow flex-col gap-2 pl-1">
         <div
           v-if="
@@ -40,7 +53,7 @@
             systemInfo.allowUserCustomBackgroundImage
           "
         >
-          <Label class="pl-1">Gallery Background</Label>
+          <Label>Gallery Background</Label>
           <div class="flex gap-2">
             <div class="w-[200px] overflow-hidden">
               <AspectRatio
@@ -63,8 +76,7 @@
                 />
                 <div
                   v-else
-                  class="flex h-full w-full items-center justify-center text-sm text-slate-400
-                    dark:text-slate-500"
+                  class="flex h-full w-full items-center justify-center text-sm text-slate-400 dark:text-slate-500"
                 >
                   <Carrot class="h-9 w-9 text-slate-300 dark:text-slate-500" />
                 </div>
@@ -90,9 +102,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="flex w-full shrink-0 items-end justify-end gap-2 border-t"
-      >
+      <div class="flex w-full shrink-0 items-end justify-end gap-2 border-t">
         <Button size="sm" class="mt-2" @click="onSubmit">
           <Save />
           Save
@@ -103,8 +113,17 @@
 </template>
 
 <script setup lang="ts">
-import BackOfficePageLayout from '../../@common/BackOfficePageLayout.vue'
 import { useColorMode } from '@vueuse/core'
+import { Carrot, Save, Sun, SunMoon } from 'lucide-vue-next'
+import { storeToRefs } from 'pinia'
+import { useField } from 'vee-validate'
+
+import { useAuthUserStore, useSystemStore } from '@/stores'
+import { useConfirmToast } from '@/composables'
+
+import { AspectRatio } from '@@materials/ui/aspect-ratio'
+import { Button } from '@@materials/ui/button'
+import { Label } from '@@materials/ui/label'
 import {
   Select,
   SelectContent,
@@ -112,19 +131,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@@materials/ui/select'
-import { Label } from '@@materials/ui/label'
-import Moon from '@/components/GalleryPage/Moon.vue'
-import { Sun, SunMoon, Carrot, Save } from 'lucide-vue-next'
 import { Switch } from '@@materials/ui/switch'
-import { AspectRatio } from '@@materials/ui/aspect-ratio'
-import { useSystemStore, useAuthUserStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-import { useUserPreferencesForm } from './useUserPreferencesForm'
-import { useField } from 'vee-validate'
-import EditGalleryBackgroundImage from './modals/EditGalleryBackgroundImage.vue'
+import Moon from '@/components/GalleryPage/Moon.vue'
+import BackOfficePageLayout from '../../@common/BackOfficePageLayout.vue'
 import DeleteBackgroundImageButton from './modals/DeleteBackgroundImageButton.vue'
-import { useConfirmToast } from '@/composables'
-import { Button } from '@@materials/ui/button'
+import EditGalleryBackgroundImage from './modals/EditGalleryBackgroundImage.vue'
+import { useUserPreferencesForm } from './useUserPreferencesForm'
 
 const { systemInfo } = storeToRefs(useSystemStore())
 const authUserStore = useAuthUserStore()
@@ -136,6 +148,10 @@ const { value: disableDefaultBackgroundImage } = useField<boolean>(
   'disableDefaultBackgroundImage'
 )
 
+const { value: allowShowingDescription } = useField<boolean>(
+  'allowShowingDescription'
+)
+
 const { store: colorMode } = useColorMode({ disableTransition: false })
 
 const items = [
@@ -144,7 +160,7 @@ const items = [
   { text: 'Auto', value: 'auto', icon: SunMoon }
 ]
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async values => {
   await useConfirmToast(
     async () => {
       await authUserStore.updateUserPreferences(values)
