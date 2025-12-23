@@ -14,12 +14,15 @@
       >
         <div class="mb-2 px-2">
           <h2
-            v-if="isManySections"
+            v-if="isMultiSections"
             class="border-secondary border-b text-sm font-semibold text-slate-400 italic dark:text-slate-300"
           >
             {{ sectionName }}
           </h2>
-          <div class="flex flex-wrap justify-start gap-4 p-4 px-3">
+          <div
+            class="flex flex-wrap gap-4 p-4 px-3"
+            :class="[isMultiSections ? 'justify-start' : 'justify-center']"
+          >
             <div
               v-for="action in actionsBySection[sectionName]"
               :key="action.id"
@@ -99,7 +102,7 @@ const actionsBySection = computed(() => {
   return sections
 })
 
-const isManySections = computed(() => {
+const isMultiSections = computed(() => {
   return (
     Object.keys(actionsBySection.value).length > 1 ||
     Object.keys(actionsBySection.value)[0] !== 'Others'
