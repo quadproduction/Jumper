@@ -29,7 +29,7 @@
 import { PlayableAction } from '@@types/action'
 import { Carrot } from 'lucide-vue-next'
 
-const props = defineProps<{
+defineProps<{
   action: PlayableAction | null
 }>()
 </script>
