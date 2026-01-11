@@ -1,8 +1,11 @@
-import { defineStore } from 'pinia'
-import jumper from '@/services/jumper'
-import { usePermissions } from './permissions'
 import type { User, UserPreferences } from '@@types'
+
+import { defineStore } from 'pinia'
+
+import jumper from '@/services/jumper'
 import { useQuery } from '@/composables/query/useQuery'
+
+import { usePermissions } from './permissions'
 
 export const useAuthUserStore = defineStore('authUser', () => {
   const query = useQuery(['authUser'], fetchUser)
@@ -43,7 +46,7 @@ export const useAuthUserStore = defineStore('authUser', () => {
     if (!user.value) throw new Error('User not found')
     const newUser = await jumper.users.update(user.value.id, data)
     if (!newUser) return
-    setUser((old) => {
+    setUser(old => {
       if (!old) return null
       return {
         ...old,
@@ -60,7 +63,7 @@ export const useAuthUserStore = defineStore('authUser', () => {
   const updateProfilePicture = async (file: File) => {
     if (!user.value) throw new Error('User not found')
     const result = await jumper.users.updateProfilePicture(user.value.id, file)
-    setUser((old) => {
+    setUser(old => {
       if (!old) return undefined
       return { ...old, profilePictureUrl: result.profilePictureUrl }
     })
@@ -75,7 +78,7 @@ export const useAuthUserStore = defineStore('authUser', () => {
       user.value.preferences.id,
       preferences
     )
-    setUser((old) => {
+    setUser(old => {
       if (!old) return undefined
       return { ...old, preferences: result }
     })
@@ -88,7 +91,7 @@ export const useAuthUserStore = defineStore('authUser', () => {
       user.value.preferences.id,
       file
     )
-    setUser((old) => {
+    setUser(old => {
       if (!old) return undefined
       return {
         ...old,
@@ -106,7 +109,7 @@ export const useAuthUserStore = defineStore('authUser', () => {
     const result = await jumper.users.deleteUserPreferenceBackgroundImage(
       user.value.preferences.id
     )
-    setUser((old) => {
+    setUser(old => {
       if (!old) return undefined
       return {
         ...old,
