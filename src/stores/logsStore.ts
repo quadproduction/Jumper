@@ -24,6 +24,7 @@ export const useLogsStore = defineStore('logsConfig', () => {
         (a, b) =>
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       )
+      .toReversed()
   )
 
   const pushLog = (log: Omit<Log, 'timestamp'>) => {
